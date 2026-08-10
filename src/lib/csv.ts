@@ -1,4 +1,4 @@
-import type { Account } from '../types'
+import type { Account, Lead } from '../types'
 
 const HEADERS = [
   'name',
@@ -43,6 +43,35 @@ export function accountsToCsv(accounts: Account[]): string {
       .join(','),
   )
   return [HEADERS.join(','), ...rows].join('\n')
+}
+
+const LEAD_HEADERS = [
+  'name',
+  'vertical',
+  'whyFit',
+  'signal',
+  'distribution',
+  'productFormat',
+  'sourceUrls',
+  'unverified',
+] as const
+
+export function leadsToCsv(leads: Lead[]): string {
+  const rows = leads.map((lead) =>
+    [
+      lead.name,
+      lead.vertical,
+      lead.whyFit,
+      lead.signal,
+      lead.distribution,
+      lead.productFormat,
+      lead.sourceUrls.join('; '),
+      lead.unverified ? 'yes' : '',
+    ]
+      .map(escapeCsvCell)
+      .join(','),
+  )
+  return [LEAD_HEADERS.join(','), ...rows].join('\n')
 }
 
 export function downloadCsv(filename: string, csv: string): void {
