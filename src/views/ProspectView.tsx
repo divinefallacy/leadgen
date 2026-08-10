@@ -10,9 +10,13 @@ import {
   type RevenueLine,
   type Territory,
 } from '../config'
+import type { Lead } from '../types'
 import { buildBrief } from '../lib/brief'
+import { searchLeads } from '../lib/leadSearch'
+import { leadsToCsv, downloadCsv } from '../lib/csv'
 import { PillRadioGroup } from '../components/PillRadioGroup'
 import { CheckboxGroup } from '../components/CheckboxGroup'
+import { LeadCard } from '../components/LeadCard'
 
 function idsWithDefault(options: { id: string; defaultOn: boolean }[]): Set<string> {
   return new Set(options.filter((o) => o.defaultOn).map((o) => o.id))
@@ -26,6 +30,9 @@ export function ProspectView() {
   const [capital, setCapital] = useState<CapitalSignal>(DEFAULT_CAPITAL_SIGNAL)
   const [editedBrief, setEditedBrief] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [leads, setLeads] = useState<Lead[] | null>(null)
+  const [searching, setSearching] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
 
   const generatedBrief = useMemo(
     () => buildBrief({ line, territory, verticalIds, exclusionIds, capital }),
@@ -56,6 +63,24 @@ export function ProspectView() {
     await navigator.clipboard.writeText(brief)
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
+  }
+
+  const handleSearch = async () => {
+    setSearching(true)
+    setSearchError(null)
+    try {
+      const results = await searchLeads(brief)
+      setLeads(results)
+    } catch (err) {
+      setSearchError(err instanceof Error ? err.message : 'Search failed.')
+    } finally {
+      setSearching(false)
+    }
+  }
+
+  const handleExportLeads = () => {
+    if (!leads || leads.length === 0) return
+    downloadCsv('leads.csv', leadsToCsv(leads))
   }
 
   return (
@@ -122,13 +147,23 @@ export function ProspectView() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div className="text-sm font-medium text-neutral-300">Search brief</div>
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="rounded border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-500 hover:text-neutral-100"
-            >
-              {copied ? 'Copied' : 'Copy'}
-            </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="rounded border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-500 hover:text-neutral-100"
+              >
+                {copied ? 'Copied' : 'Copy'}
+              </button>
+              <button
+                type="button"
+                onClick={handleSearch}
+                disabled={searching}
+                className="rounded bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-900 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {searching ? 'Searching…' : 'Search for leads'}
+              </button>
+            </div>
           </div>
           <textarea
             value={brief}
@@ -138,6 +173,46 @@ export function ProspectView() {
           />
         </div>
       </div>
+
+      {searching && (
+        <div className="rounded border border-neutral-800 p-8 text-center text-sm text-neutral-500">
+          Searching the web for candidates — this can take a minute…
+        </div>
+      )}
+
+      {searchError && (
+        <div className="rounded border border-red-900 bg-red-950/40 p-4 text-sm text-red-400">
+          {searchError}
+        </div>
+      )}
+
+      {!searching && leads && (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium text-neutral-300">
+              {leads.length} lead{leads.length === 1 ? '' : 's'} found
+            </div>
+            {leads.length > 0 && (
+              <button
+                type="button"
+                onClick={handleExportLeads}
+                className="rounded border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-500 hover:text-neutral-100"
+              >
+                Export CSV
+              </button>
+            )}
+          </div>
+          <div className="rounded border border-neutral-800">
+            {leads.length === 0 ? (
+              <div className="p-8 text-center text-sm text-neutral-500">
+                No qualifying leads found. Try loosening the filters.
+              </div>
+            ) : (
+              leads.map((lead) => <LeadCard key={lead.name} lead={lead} />)
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

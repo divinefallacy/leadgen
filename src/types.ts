@@ -20,3 +20,14 @@ export type Account = {
   note: string
   dataIssue?: string
 }
+
+export type Lead = {
+  name: string
+  vertical: string
+  whyFit: string
+  signal: string
+  distribution: string
+  productFormat: string
+  sourceUrls: string[]
+  unverified: boolean
+}
