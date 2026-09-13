@@ -28,7 +28,11 @@ function matchesFilter(account: Account, filter: AccountFilter): boolean {
   }
 }
 
-export function AccountsView() {
+// Events and Licensing are separate business lines that must never be
+// blended into one pipeline view — a company can have a live deal on one
+// line and be dead on the other (see Michelin), so each line gets its own
+// scoped metrics, filters, and export.
+export function AccountsView({ line, title }: { line: 'Event' | 'Licensing'; title: string }) {
   const [accounts, setAccounts] = useState<Account[]>([])
   const [filter, setFilter] = useState<AccountFilter>('lapse')
 
@@ -36,27 +40,31 @@ export function AccountsView() {
     accountRepo.listAccounts().then(setAccounts)
   }, [])
 
+  const lineAccounts = useMemo(() => accounts.filter((a) => a.line === line), [accounts, line])
+
   const filtered = useMemo(
     () =>
-      accounts
+      lineAccounts
         .filter((a) => matchesFilter(a, filter))
         .sort((a, b) => b.rev2025 + b.rev2026 - (a.rev2025 + a.rev2026)),
-    [accounts, filter],
+    [lineAccounts, filter],
   )
 
-  const delta = yoyDelta(accounts)
+  const delta = yoyDelta(lineAccounts)
 
   const handleExport = () => {
     const csv = accountsToCsv(filtered)
-    downloadCsv(`accounts-${filter}.csv`, csv)
+    downloadCsv(`${line.toLowerCase()}-${filter}.csv`, csv)
   }
 
   return (
     <div className="flex flex-col gap-6">
+      <h2 className="text-lg font-semibold text-neutral-100">{title}</h2>
+
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <MetricCard label="Revenue at risk" value={formatCurrency(revenueAtRisk(accounts))} tone="red" />
-        <MetricCard label="2026 booked" value={formatCurrency(booked2026(accounts))} />
-        <MetricCard label="Accounts to action" value={String(accountsToAction(accounts))} />
+        <MetricCard label="Revenue at risk" value={formatCurrency(revenueAtRisk(lineAccounts))} tone="red" />
+        <MetricCard label="2026 booked" value={formatCurrency(booked2026(lineAccounts))} />
+        <MetricCard label="Accounts to action" value={String(accountsToAction(lineAccounts))} />
         <MetricCard
           label="YoY delta"
           value={formatDelta(delta)}

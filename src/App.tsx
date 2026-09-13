@@ -1,12 +1,23 @@
 import { useState } from 'react'
-import { AccountsView } from './views/AccountsView'
+import { DashboardView } from './views/DashboardView'
+import { EventsView } from './views/EventsView'
+import { LicensingView } from './views/LicensingView'
 import { ProspectView } from './views/ProspectView'
 import { IpLeadsView } from './views/IpLeadsView'
 
-type View = 'accounts' | 'prospect' | 'ip-leads'
+const TABS = [
+  { id: 'dashboard', label: 'Dashboard', Component: DashboardView },
+  { id: 'events', label: 'Events', Component: EventsView },
+  { id: 'licensing', label: 'IP Licensing', Component: LicensingView },
+  { id: 'prospect', label: 'Find new leads', Component: ProspectView },
+  { id: 'ip-leads', label: 'IP licensee leads', Component: IpLeadsView },
+] as const
+
+type View = (typeof TABS)[number]['id']
 
 function App() {
-  const [view, setView] = useState<View>('accounts')
+  const [view, setView] = useState<View>('dashboard')
+  const ActiveView = TABS.find((t) => t.id === view)?.Component ?? DashboardView
 
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100">
@@ -16,48 +27,27 @@ function App() {
             <h1 className="text-lg font-semibold">Pudgy APAC Partnership Intelligence</h1>
             <p className="text-sm text-neutral-500">Igloo APAC · revenue expansion &amp; outbound</p>
           </div>
-          <nav className="flex gap-1">
-            <button
-              type="button"
-              onClick={() => setView('accounts')}
-              className={`rounded px-3 py-1.5 text-sm ${
-                view === 'accounts'
-                  ? 'bg-neutral-800 text-neutral-100'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              Accounts
-            </button>
-            <button
-              type="button"
-              onClick={() => setView('prospect')}
-              className={`rounded px-3 py-1.5 text-sm ${
-                view === 'prospect'
-                  ? 'bg-neutral-800 text-neutral-100'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              Find new leads
-            </button>
-            <button
-              type="button"
-              onClick={() => setView('ip-leads')}
-              className={`rounded px-3 py-1.5 text-sm ${
-                view === 'ip-leads'
-                  ? 'bg-neutral-800 text-neutral-100'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              IP licensee leads
-            </button>
+          <nav className="flex flex-wrap gap-1">
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setView(tab.id)}
+                className={`rounded px-3 py-1.5 text-sm ${
+                  view === tab.id
+                    ? 'bg-neutral-800 text-neutral-100'
+                    : 'text-neutral-400 hover:text-neutral-200'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </nav>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-6">
-        {view === 'accounts' && <AccountsView />}
-        {view === 'prospect' && <ProspectView />}
-        {view === 'ip-leads' && <IpLeadsView />}
+        <ActiveView />
       </main>
     </div>
   )

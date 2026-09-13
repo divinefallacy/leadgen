@@ -8,6 +8,7 @@ import {
   isUrgent,
   pipelineAccounts,
   revenueAtRisk,
+  totalRevenue2025,
   yoyDelta,
 } from './metrics'
 
@@ -110,6 +111,18 @@ describe('revenueAtRisk', () => {
       makeAccount({ action: 'lapse', rev2025: 50000 }),
     ]
     expect(revenueAtRisk(accounts)).toBe(50000)
+  })
+})
+
+describe('totalRevenue2025', () => {
+  it('sums 2025 revenue across the live pipeline', () => {
+    const accounts = [
+      makeAccount({ rev2025: 100000 }),
+      makeAccount({ rev2025: 36912 }),
+      makeAccount({ rev2025: 5000, counterpartyStatus: 'wound_down' }),
+      makeAccount({ rev2025: 9000, dealDirection: 'spend_out' }),
+    ]
+    expect(totalRevenue2025(accounts)).toBe(136912)
   })
 })
 

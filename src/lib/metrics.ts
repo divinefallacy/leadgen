@@ -31,6 +31,11 @@ export function revenueAtRisk(accounts: Account[]): number {
     .reduce((sum, a) => sum + a.rev2025, 0)
 }
 
+/** Total 2025 revenue across the pipeline, excluding dead counterparties/spend-out. */
+export function totalRevenue2025(accounts: Account[]): number {
+  return pipelineAccounts(accounts).reduce((sum, a) => sum + a.rev2025, 0)
+}
+
 /** Total 2026 revenue booked so far, excluding dead counterparties/spend-out. */
 export function booked2026(accounts: Account[]): number {
   return pipelineAccounts(accounts).reduce((sum, a) => sum + a.rev2026, 0)

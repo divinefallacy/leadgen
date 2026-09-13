@@ -13,7 +13,4 @@ export const counterpartyStatusOverrides: Record<string, CounterpartyStatus> = {
   '1Max': 'wound_down', // company closed
   BitMart: 'wound_down', // company closed
   'Moon Ring (Inactive)': 'wound_down', // marked inactive in the sponsorship database
-  // Michelin was flagged wound_down from event-sponsorship silence alone; the
-  // licensing CSV shows an active, revenue-producing contract, so it stays
-  // live here (see the account's dataIssue for the conflicting read).
 }
