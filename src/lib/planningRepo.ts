@@ -3,7 +3,20 @@ import type { MonthPlan } from '../types'
 const STORAGE_KEY = 'leadgen.planning.v1'
 
 function emptyMonth(month: string): MonthPlan {
-  return { month, targetEvents: [], licensingTarget: '', licensingGoalMet: false }
+  return {
+    month,
+    targetEvents: [],
+    eventsRevenueTarget: 0,
+    licensingTarget: '',
+    licensingRevenueTarget: 0,
+    licensingGoalMet: false,
+  }
+}
+
+// Merges over emptyMonth() so plans saved before a MonthPlan field was added
+// (e.g. the revenue targets) still come back fully shaped instead of undefined.
+function hydrate(month: string, saved: MonthPlan | undefined): MonthPlan {
+  return { ...emptyMonth(month), ...saved, month }
 }
 
 function monthsOf(year: number): string[] {
@@ -38,12 +51,12 @@ function writeAll(plans: Record<string, MonthPlan>): void {
 class LocalStoragePlanningRepo implements PlanningRepo {
   async getYearPlan(year: number): Promise<MonthPlan[]> {
     const saved = readAll()
-    return monthsOf(year).map((month) => saved[month] ?? emptyMonth(month))
+    return monthsOf(year).map((month) => hydrate(month, saved[month]))
   }
 
   async updateMonth(month: string, patch: Partial<Omit<MonthPlan, 'month'>>): Promise<MonthPlan> {
     const saved = readAll()
-    const updated: MonthPlan = { ...(saved[month] ?? emptyMonth(month)), ...patch, month }
+    const updated: MonthPlan = { ...hydrate(month, saved[month]), ...patch, month }
     writeAll({ ...saved, [month]: updated })
     return updated
   }

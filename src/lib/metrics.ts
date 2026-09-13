@@ -91,3 +91,8 @@ export function monthlyDealValue(accounts: Account[]): MonthlyValue[] {
 export function dealsInMonth(accounts: Account[], month: string): Account[] {
   return pipelineAccounts(accounts).filter((a) => a.keyDate?.slice(0, 7) === month)
 }
+
+/** Total deal value (rev2025 + rev2026) across a set of accounts — the actual-revenue side of a plan-vs-actual comparison. */
+export function dealValue(accounts: Account[]): number {
+  return accounts.reduce((sum, a) => sum + a.rev2025 + a.rev2026, 0)
+}

@@ -56,8 +56,12 @@ export type MonthPlan = {
   month: string
   /** Headline events being targeted this month (Token2049, KBW, ...) — presence of any marks it an Events-focus month. */
   targetEvents: string[]
+  /** Revenue goal for Events this month, in dollars. */
+  eventsRevenueTarget: number
   /** Free text: which licensing deal(s) this month is aimed at closing. */
   licensingTarget: string
+  /** Revenue goal for Licensing this month, in dollars. */
+  licensingRevenueTarget: number
   /** Manually confirmed once the month's licensing goal is actually hit. */
   licensingGoalMet: boolean
 }

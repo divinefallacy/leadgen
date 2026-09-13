@@ -2,10 +2,35 @@ import { useEffect, useMemo, useState } from 'react'
 import type { Account, MonthPlan } from '../types'
 import { accountRepo } from '../lib/repo'
 import { planningRepo } from '../lib/planningRepo'
-import { dealsInMonth } from '../lib/metrics'
+import { dealsInMonth, dealValue } from '../lib/metrics'
+import { formatCurrency } from '../lib/format'
 import { KNOWN_BIG_EVENTS, LICENSING_MONTHLY_GOAL } from '../config'
 import { MetricCard } from '../components/MetricCard'
 import { MonthPlanCard } from '../components/MonthPlanCard'
+
+function LinePlanSummary({
+  title,
+  revenueTarget,
+  revenueActual,
+  extra,
+}: {
+  title: string
+  revenueTarget: number
+  revenueActual: number
+  extra: { label: string; value: string }
+}) {
+  const onTrack = revenueActual >= revenueTarget && revenueTarget > 0
+  return (
+    <div className="flex flex-col gap-3 rounded border border-neutral-800 bg-neutral-900 p-4">
+      <div className="text-sm font-medium text-neutral-300">{title}</div>
+      <div className="grid grid-cols-3 gap-3">
+        <MetricCard label="Revenue target" value={formatCurrency(revenueTarget)} />
+        <MetricCard label="Actual booked" value={formatCurrency(revenueActual)} tone={onTrack ? 'green' : 'neutral'} />
+        <MetricCard label={extra.label} value={extra.value} />
+      </div>
+    </div>
+  )
+}
 
 export function PlanningView() {
   const [year, setYear] = useState(() => new Date().getFullYear() + 1)
@@ -34,6 +59,14 @@ export function PlanningView() {
     }
     return map
   }, [plans, accounts])
+
+  const eventsRevenueTarget = plans.reduce((sum, p) => sum + p.eventsRevenueTarget, 0)
+  const licensingRevenueTarget = plans.reduce((sum, p) => sum + p.licensingRevenueTarget, 0)
+  const eventsRevenueActual = plans.reduce((sum, p) => sum + dealValue(dealsByMonth.get(p.month)?.events ?? []), 0)
+  const licensingRevenueActual = plans.reduce(
+    (sum, p) => sum + dealValue(dealsByMonth.get(p.month)?.licensing ?? []),
+    0,
+  )
 
   const handleMonthChange = (month: string, patch: Partial<Omit<MonthPlan, 'month'>>) => {
     setPlans((prev) => prev.map((p) => (p.month === month ? { ...p, ...patch } : p)))
@@ -68,13 +101,18 @@ export function PlanningView() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <MetricCard label="Events-focus months" value={`${eventFocusMonths} / 12`} />
-        <MetricCard label="Licensing-focus months" value={`${12 - eventFocusMonths} / 12`} />
-        <MetricCard
-          label="Licensing goal met"
-          value={`${goalsMet} / 12`}
-          tone={goalsMet === 12 ? 'green' : 'neutral'}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <LinePlanSummary
+          title="Events plan"
+          revenueTarget={eventsRevenueTarget}
+          revenueActual={eventsRevenueActual}
+          extra={{ label: 'Focus months', value: `${eventFocusMonths} / 12` }}
+        />
+        <LinePlanSummary
+          title="Licensing plan"
+          revenueTarget={licensingRevenueTarget}
+          revenueActual={licensingRevenueActual}
+          extra={{ label: 'Goal met', value: `${goalsMet} / 12` }}
         />
       </div>
 

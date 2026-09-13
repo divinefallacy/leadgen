@@ -4,6 +4,7 @@ import {
   accountsToAction,
   booked2026,
   dealsInMonth,
+  dealValue,
   getDelta,
   isExcludedFromPipeline,
   isUrgent,
@@ -245,5 +246,19 @@ describe('dealsInMonth', () => {
       makeAccount({ id: 'c' }),
     ]
     expect(dealsInMonth(accounts, '2027-03')).toHaveLength(1)
+  })
+})
+
+describe('dealValue', () => {
+  it('sums rev2025 + rev2026 across the given accounts', () => {
+    const accounts = [
+      makeAccount({ id: 'a', rev2025: 1000, rev2026: 2000 }),
+      makeAccount({ id: 'b', rev2025: 0, rev2026: 500 }),
+    ]
+    expect(dealValue(accounts)).toBe(3500)
+  })
+
+  it('returns 0 for an empty list', () => {
+    expect(dealValue([])).toBe(0)
   })
 })
