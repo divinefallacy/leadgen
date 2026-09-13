@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import type { Account } from '../types'
 import { accountRepo } from '../lib/repo'
 import { accountsToAction, booked2026, revenueAtRisk, totalRevenue2025, yoyDelta } from '../lib/metrics'
+import { buildSuggestions } from '../lib/suggestions'
 import { formatCurrency, formatDelta } from '../lib/format'
 import { MetricCard } from '../components/MetricCard'
 import { RevenueCompareBars } from '../components/RevenueCompareBars'
+import { SuggestedActions } from '../components/SuggestedActions'
 
 function LineSummary({ title, accounts }: { title: string; accounts: Account[] }) {
   const delta = yoyDelta(accounts)
@@ -36,6 +38,7 @@ export function DashboardView() {
   const licensingAccounts = useMemo(() => accounts.filter((a) => a.line === 'Licensing'), [accounts])
 
   const overallDelta = yoyDelta(accounts)
+  const suggestions = useMemo(() => buildSuggestions(accounts), [accounts])
 
   const barRows = [
     { label: 'Events', rev2025: totalRevenue2025(eventAccounts), rev2026: booked2026(eventAccounts) },
@@ -62,6 +65,8 @@ export function DashboardView() {
           tone={overallDelta < 0 ? 'red' : overallDelta > 0 ? 'green' : 'neutral'}
         />
       </div>
+
+      <SuggestedActions suggestions={suggestions} />
 
       <RevenueCompareBars rows={barRows} />
 
