@@ -1,6 +1,5 @@
-import type { IpLead, LeadStatus } from '../types'
+import type { EventLead, LeadStatus } from '../types'
 import { StatusPill } from './StatusPill'
-import { DealTypePill } from './DealTypePill'
 
 const STATUS_OPTIONS: LeadStatus[] = [
   'new',
@@ -14,12 +13,12 @@ function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-export function IpLeadRow({
+export function EventLeadRow({
   lead,
   onStatusChange,
   onRemove,
 }: {
-  lead: IpLead
+  lead: EventLead
   onStatusChange: (id: string, status: LeadStatus) => void
   onRemove: (id: string) => void
 }) {
@@ -29,10 +28,10 @@ export function IpLeadRow({
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-medium text-neutral-100">{lead.companyName}</span>
           <StatusPill status={lead.status} />
-          <DealTypePill dealType={lead.dealType} />
         </div>
         <div className="text-xs text-neutral-500">
-          Licenses {lead.licensedIp} · {lead.vertical} · {lead.territory}
+          {lead.vertical} · {lead.territory}
+          {lead.capitalSignal && ` · ${lead.capitalSignal}`}
         </div>
         {lead.evidence && <div className="text-sm text-neutral-400">{lead.evidence}</div>}
         <div className="text-xs text-neutral-600">Added {formatDate(lead.dateAdded)}</div>

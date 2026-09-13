@@ -31,6 +31,11 @@ export function revenueAtRisk(accounts: Account[]): number {
     .reduce((sum, a) => sum + a.rev2025, 0)
 }
 
+/** Total 2025 revenue across the pipeline, excluding dead counterparties/spend-out. */
+export function totalRevenue2025(accounts: Account[]): number {
+  return pipelineAccounts(accounts).reduce((sum, a) => sum + a.rev2025, 0)
+}
+
 /** Total 2026 revenue booked so far, excluding dead counterparties/spend-out. */
 export function booked2026(accounts: Account[]): number {
   return pipelineAccounts(accounts).reduce((sum, a) => sum + a.rev2026, 0)
@@ -49,4 +54,45 @@ export function yoyDelta(accounts: Account[]): number {
   const total2025 = live.reduce((sum, a) => sum + a.rev2025, 0)
   const total2026 = live.reduce((sum, a) => sum + a.rev2026, 0)
   return total2026 - total2025
+}
+
+export type NamedValue = { name: string; value: number }
+
+/** Top accounts by 2026 revenue, excluding dead counterparties/spend-out and zero-revenue accounts. */
+export function topAccountsByRevenue2026(accounts: Account[], limit = 8): NamedValue[] {
+  return pipelineAccounts(accounts)
+    .filter((a) => a.rev2026 > 0)
+    .sort((a, b) => b.rev2026 - a.rev2026)
+    .slice(0, limit)
+    .map((a) => ({ name: a.name, value: a.rev2026 }))
+}
+
+export type MonthlyValue = { month: string; value: number }
+
+/**
+ * Deal value (rev2025 + rev2026) bucketed by the month of each account's
+ * keyDate (contract signed / start date), chronological. Accounts with no
+ * keyDate — most leads and not-yet-signed rows — are excluded rather than
+ * bucketed as "unknown", since a monthly trend is about when deals landed.
+ */
+export function monthlyDealValue(accounts: Account[]): MonthlyValue[] {
+  const byMonth = new Map<string, number>()
+  for (const a of pipelineAccounts(accounts)) {
+    if (!a.keyDate) continue
+    const bucket = a.keyDate.slice(0, 7) // YYYY-MM
+    byMonth.set(bucket, (byMonth.get(bucket) ?? 0) + a.rev2025 + a.rev2026)
+  }
+  return [...byMonth.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([month, value]) => ({ month, value }))
+}
+
+/** Accounts whose keyDate falls in the given 'YYYY-MM' month, excluding dead counterparties/spend-out. */
+export function dealsInMonth(accounts: Account[], month: string): Account[] {
+  return pipelineAccounts(accounts).filter((a) => a.keyDate?.slice(0, 7) === month)
+}
+
+/** Total deal value (rev2025 + rev2026) across a set of accounts — the actual-revenue side of a plan-vs-actual comparison. */
+export function dealValue(accounts: Account[]): number {
+  return accounts.reduce((sum, a) => sum + a.rev2025 + a.rev2026, 0)
 }

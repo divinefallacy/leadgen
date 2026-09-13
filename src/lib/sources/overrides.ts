@@ -10,7 +10,7 @@ import type { CounterpartyStatus } from '../../types'
  * listed here as 'wound_down' must never be treated as a lost deal.
  */
 export const counterpartyStatusOverrides: Record<string, CounterpartyStatus> = {
-  'Michelin (Nfinity Labs)': 'wound_down', // Web3 division closed
   '1Max': 'wound_down', // company closed
   BitMart: 'wound_down', // company closed
+  'Moon Ring (Inactive)': 'wound_down', // marked inactive in the sponsorship database
 }

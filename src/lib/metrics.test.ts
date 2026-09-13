@@ -3,11 +3,16 @@ import type { Account } from '../types'
 import {
   accountsToAction,
   booked2026,
+  dealsInMonth,
+  dealValue,
   getDelta,
   isExcludedFromPipeline,
   isUrgent,
+  monthlyDealValue,
   pipelineAccounts,
   revenueAtRisk,
+  topAccountsByRevenue2026,
+  totalRevenue2025,
   yoyDelta,
 } from './metrics'
 
@@ -113,6 +118,18 @@ describe('revenueAtRisk', () => {
   })
 })
 
+describe('totalRevenue2025', () => {
+  it('sums 2025 revenue across the live pipeline', () => {
+    const accounts = [
+      makeAccount({ rev2025: 100000 }),
+      makeAccount({ rev2025: 36912 }),
+      makeAccount({ rev2025: 5000, counterpartyStatus: 'wound_down' }),
+      makeAccount({ rev2025: 9000, dealDirection: 'spend_out' }),
+    ]
+    expect(totalRevenue2025(accounts)).toBe(136912)
+  })
+})
+
 describe('booked2026', () => {
   it('sums 2026 revenue excluding wound-down and spend-out', () => {
     const accounts = [
@@ -162,5 +179,86 @@ describe('yoyDelta', () => {
       makeAccount({ rev2025: 100, rev2026: 150 }),
     ]
     expect(yoyDelta(accounts)).toBe(50)
+  })
+})
+
+describe('topAccountsByRevenue2026', () => {
+  it('ranks accounts by rev2026 descending and drops zero-revenue accounts', () => {
+    const accounts = [
+      makeAccount({ id: 'a', name: 'A', rev2026: 5000 }),
+      makeAccount({ id: 'b', name: 'B', rev2026: 20000 }),
+      makeAccount({ id: 'c', name: 'C', rev2026: 0 }),
+    ]
+    expect(topAccountsByRevenue2026(accounts)).toEqual([
+      { name: 'B', value: 20000 },
+      { name: 'A', value: 5000 },
+    ])
+  })
+
+  it('excludes wound-down and spend-out accounts, and respects the limit', () => {
+    const accounts = [
+      makeAccount({ id: 'a', name: 'A', rev2026: 5000, counterpartyStatus: 'wound_down' }),
+      makeAccount({ id: 'b', name: 'B', rev2026: 20000, dealDirection: 'spend_out' }),
+      makeAccount({ id: 'c', name: 'C', rev2026: 3000 }),
+      makeAccount({ id: 'd', name: 'D', rev2026: 4000 }),
+    ]
+    expect(topAccountsByRevenue2026(accounts, 1)).toEqual([{ name: 'D', value: 4000 }])
+  })
+})
+
+describe('monthlyDealValue', () => {
+  it('buckets rev2025 + rev2026 by the month of keyDate, sorted chronologically', () => {
+    const accounts = [
+      makeAccount({ id: 'a', rev2025: 0, rev2026: 8000, keyDate: '2026-06-30' }),
+      makeAccount({ id: 'b', rev2025: 2100, rev2026: 0, keyDate: '2026-01-08' }),
+      makeAccount({ id: 'c', rev2025: 0, rev2026: 2000, keyDate: '2026-06-15' }),
+    ]
+    expect(monthlyDealValue(accounts)).toEqual([
+      { month: '2026-01', value: 2100 },
+      { month: '2026-06', value: 10000 },
+    ])
+  })
+
+  it('excludes accounts with no keyDate and dead/spend-out accounts', () => {
+    const accounts = [
+      makeAccount({ id: 'a', rev2026: 5000 }),
+      makeAccount({ id: 'b', rev2026: 5000, keyDate: '2026-01-08', counterpartyStatus: 'wound_down' }),
+      makeAccount({ id: 'c', rev2026: 5000, keyDate: '2026-01-08', dealDirection: 'spend_out' }),
+    ]
+    expect(monthlyDealValue(accounts)).toEqual([])
+  })
+})
+
+describe('dealsInMonth', () => {
+  it('returns only accounts whose keyDate falls in the given month', () => {
+    const accounts = [
+      makeAccount({ id: 'a', name: 'A', keyDate: '2027-03-15' }),
+      makeAccount({ id: 'b', name: 'B', keyDate: '2027-04-01' }),
+      makeAccount({ id: 'c', name: 'C', keyDate: '2027-03-02' }),
+    ]
+    expect(dealsInMonth(accounts, '2027-03').map((a) => a.name)).toEqual(['A', 'C'])
+  })
+
+  it('excludes accounts with no keyDate and dead/spend-out accounts', () => {
+    const accounts = [
+      makeAccount({ id: 'a', keyDate: '2027-03-15' }),
+      makeAccount({ id: 'b', keyDate: '2027-03-15', counterpartyStatus: 'wound_down' }),
+      makeAccount({ id: 'c' }),
+    ]
+    expect(dealsInMonth(accounts, '2027-03')).toHaveLength(1)
+  })
+})
+
+describe('dealValue', () => {
+  it('sums rev2025 + rev2026 across the given accounts', () => {
+    const accounts = [
+      makeAccount({ id: 'a', rev2025: 1000, rev2026: 2000 }),
+      makeAccount({ id: 'b', rev2025: 0, rev2026: 500 }),
+    ]
+    expect(dealValue(accounts)).toBe(3500)
+  })
+
+  it('returns 0 for an empty list', () => {
+    expect(dealValue([])).toBe(0)
   })
 })

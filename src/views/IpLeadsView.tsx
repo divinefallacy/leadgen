@@ -1,13 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { IpLead, IpLeadStatus } from '../types'
+import type { IpLead, IpLeadDealType, LeadStatus } from '../types'
 import { COMMON_LICENSED_IPS, TERRITORIES, VERTICAL_OPTIONS, type Territory } from '../config'
 import { ipLeadRepo } from '../lib/ipLeadsRepo'
 import { ipLeadsToCsv, downloadCsv } from '../lib/csv'
 import { buildIpLeadBrief } from '../lib/brief'
+import { parseBulkLeadReply } from '../lib/ipLeadsImport'
 import { MetricCard } from '../components/MetricCard'
 import { IpLeadRow } from '../components/IpLeadRow'
+import { PillRadioGroup } from '../components/PillRadioGroup'
 
-type StatusFilter = 'all' | IpLeadStatus
+const DEAL_TYPE_OPTIONS: { id: IpLeadDealType; label: string }[] = [
+  { id: 'prestige', label: 'Prestige (brand halo)' },
+  { id: 'revenue', label: 'Revenue (pays real fees)' },
+]
+
+type StatusFilter = 'all' | LeadStatus
 
 const FILTER_TABS: { id: StatusFilter; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -23,6 +30,7 @@ const emptyForm = {
   licensedIp: '',
   vertical: VERTICAL_OPTIONS[0]?.label ?? '',
   territory: TERRITORIES[0] as Territory,
+  dealType: 'prestige' as IpLeadDealType,
   evidence: '',
 }
 
@@ -33,6 +41,8 @@ export function IpLeadsView() {
   const [briefTerritory, setBriefTerritory] = useState<Territory>(TERRITORIES[0] as Territory)
   const [briefIp, setBriefIp] = useState('')
   const [copied, setCopied] = useState(false)
+  const [importText, setImportText] = useState('')
+  const [importResult, setImportResult] = useState<string | null>(null)
 
   const refresh = () => {
     ipLeadRepo.listLeads().then(setLeads)
@@ -47,16 +57,17 @@ export function IpLeadsView() {
 
   const qualifiedCount = leads.filter((l) => l.status === 'qualified').length
   const newCount = leads.filter((l) => l.status === 'new').length
+  const revenueCount = leads.filter((l) => l.dealType === 'revenue').length
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.companyName.trim() || !form.licensedIp.trim()) return
     await ipLeadRepo.addLead(form)
-    setForm({ ...emptyForm, vertical: form.vertical, territory: form.territory })
+    setForm({ ...emptyForm, vertical: form.vertical, territory: form.territory, dealType: form.dealType })
     refresh()
   }
 
-  const handleStatusChange = async (id: string, status: IpLeadStatus) => {
+  const handleStatusChange = async (id: string, status: LeadStatus) => {
     await ipLeadRepo.updateStatus(id, status)
     refresh()
   }
@@ -78,19 +89,55 @@ export function IpLeadsView() {
     setTimeout(() => setCopied(false), 1500)
   }
 
+  const handleImport = async () => {
+    const parsed = parseBulkLeadReply(importText, 20)
+    if (parsed.length === 0) {
+      setImportResult("Couldn't find any pipe-delimited rows in that text — paste the chat's reply as-is.")
+      return
+    }
+
+    const existingNames = new Set(leads.map((l) => l.companyName.trim().toLowerCase()))
+    const fresh = parsed.filter((p) => !existingNames.has(p.companyName.trim().toLowerCase()))
+    const duplicateCount = parsed.length - fresh.length
+
+    if (fresh.length > 0) {
+      await ipLeadRepo.addLeads(
+        fresh.map((p) => ({
+          companyName: p.companyName,
+          licensedIp: p.licensedIp,
+          vertical: p.vertical || 'Unknown',
+          territory: briefTerritory,
+          dealType: p.dealType,
+          evidence: p.evidence,
+        })),
+      )
+    }
+
+    setImportResult(
+      `Added ${fresh.length} lead${fresh.length === 1 ? '' : 's'}` +
+        (duplicateCount > 0 ? ` (skipped ${duplicateCount} already tracked)` : '.'),
+    )
+    setImportText('')
+    refresh()
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div>
         <p className="text-sm text-neutral-400">
-          Companies already paying to license someone else's characters (Sanrio, Disney, Pokemon,
-          etc.) have proven they'll pay for a character license — that makes them a warmer Pudgy
-          prospect than a cold outbound target. Track them here as you find them.
+          Not every company licensing character IP is an equally warm lead. A{' '}
+          <span className="text-neutral-300">prestige</span> partner (Disney, Sanrio, Marvel...) brings
+          brand halo but the deal is often reciprocal or promotional — modest direct revenue. A{' '}
+          <span className="text-green-400">revenue</span> licensee pays real, disclosed fees for a
+          smaller or less iconic IP — proven willingness and ability to pay, regardless of prestige.
+          Track both, tagged separately, so outreach doesn't confuse exposure with revenue.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <MetricCard label="Tracked" value={String(leads.length)} />
         <MetricCard label="New" value={String(newCount)} />
+        <MetricCard label="Revenue-focused" value={String(revenueCount)} tone="green" />
         <MetricCard label="Qualified" value={String(qualifiedCount)} tone="green" />
       </div>
 
@@ -157,6 +204,15 @@ export function IpLeadsView() {
         </div>
 
         <div className="flex flex-col gap-1 sm:col-span-2">
+          <label className="text-xs text-neutral-500">Deal type</label>
+          <PillRadioGroup
+            options={DEAL_TYPE_OPTIONS}
+            value={form.dealType}
+            onChange={(dealType) => setForm({ ...form, dealType })}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1 sm:col-span-2">
           <label className="text-xs text-neutral-500">Evidence (source, link, or note)</label>
           <textarea
             value={form.evidence}
@@ -220,46 +276,91 @@ export function IpLeadsView() {
         )}
       </div>
 
-      <div className="flex flex-col gap-2 rounded border border-neutral-800 bg-neutral-900 p-4">
-        <div className="text-sm font-medium text-neutral-300">
-          Research prompt — hand this to a researcher or LLM to keep generating this list
+      <div className="flex flex-col gap-4 rounded border border-neutral-800 bg-neutral-900 p-4">
+        <div>
+          <div className="text-sm font-medium text-neutral-300">Generate 20 leads</div>
+          <p className="text-xs text-neutral-500">
+            No API calls, no cost — this rides on any Claude chat you already have. Copy the prompt, run
+            it in a chat, then paste the reply back to add all 20 at once.
+          </p>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <select
-            value={briefTerritory}
-            onChange={(e) => setBriefTerritory(e.target.value as Territory)}
-            className="rounded border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-100 focus:border-neutral-500 focus:outline-none"
-          >
-            {TERRITORIES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-          <input
-            list="common-licensed-ips"
-            value={briefIp}
-            onChange={(e) => setBriefIp(e.target.value)}
-            placeholder="Focus IP (optional, e.g. Sanrio)"
-            className="rounded border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-100 focus:border-neutral-500 focus:outline-none"
+
+        <div className="flex flex-col gap-2">
+          <div className="text-xs font-medium text-neutral-400">1. Copy the research prompt</div>
+          <div className="flex flex-wrap gap-3">
+            <select
+              value={briefTerritory}
+              onChange={(e) => setBriefTerritory(e.target.value as Territory)}
+              className="rounded border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-100 focus:border-neutral-500 focus:outline-none"
+            >
+              {TERRITORIES.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+            <input
+              list="common-licensed-ips"
+              value={briefIp}
+              onChange={(e) => setBriefIp(e.target.value)}
+              placeholder="Focus IP (optional, e.g. Sanrio)"
+              className="rounded border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-100 focus:border-neutral-500 focus:outline-none"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-neutral-500">This asks for exactly 20, in a format step 3 can parse.</span>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="rounded border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-500 hover:text-neutral-100"
+            >
+              {copied ? 'Copied' : 'Copy prompt'}
+            </button>
+          </div>
+          <textarea
+            readOnly
+            value={brief}
+            rows={6}
+            className="w-full resize-none rounded border border-neutral-800 bg-neutral-950 p-3 font-mono text-sm text-neutral-200 focus:border-neutral-500 focus:outline-none"
           />
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-neutral-500">Copy, run it, then add what it finds above.</span>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="rounded border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-500 hover:text-neutral-100"
+
+        <div className="flex flex-col gap-2">
+          <div className="text-xs font-medium text-neutral-400">2. Run it in a Claude chat</div>
+          <a
+            href="https://claude.ai/new"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-fit rounded border border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:border-neutral-500 hover:text-neutral-100"
           >
-            {copied ? 'Copied' : 'Copy'}
-          </button>
+            Open a new Claude chat ↗
+          </a>
         </div>
-        <textarea
-          readOnly
-          value={brief}
-          rows={8}
-          className="w-full resize-none rounded border border-neutral-800 bg-neutral-950 p-3 font-mono text-sm text-neutral-200 focus:border-neutral-500 focus:outline-none"
-        />
+
+        <div className="flex flex-col gap-2">
+          <div className="text-xs font-medium text-neutral-400">3. Paste the reply here to add all 20</div>
+          <textarea
+            value={importText}
+            onChange={(e) => {
+              setImportText(e.target.value)
+              setImportResult(null)
+            }}
+            rows={6}
+            placeholder="Paste the chat's reply — one company per line, pipe-separated"
+            className="w-full resize-none rounded border border-neutral-700 bg-neutral-950 p-3 font-mono text-sm text-neutral-200 focus:border-neutral-500 focus:outline-none"
+          />
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-neutral-500">{importResult ?? 'Duplicates already tracked are skipped automatically.'}</span>
+            <button
+              type="button"
+              onClick={handleImport}
+              disabled={!importText.trim()}
+              className="rounded bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-900 hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Import leads
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,20 +1,20 @@
-import type { IpLead, LeadStatus, NewIpLeadInput } from '../types'
+import type { EventLead, LeadStatus, NewEventLeadInput } from '../types'
 
-const STORAGE_KEY = 'leadgen.ipLeads.v1'
+const STORAGE_KEY = 'leadgen.eventLeads.v1'
 
-// Data access boundary, same shape as AccountRepo. Backed by localStorage for
+// Data access boundary, same shape as IpLeadRepo. Backed by localStorage for
 // now since there's no server — swap for a real API without touching
-// callers. This is the list IpLeadsView keeps growing over time as new
-// IP-licensee companies are found, unlike the seed-data AccountRepo.
-export interface IpLeadRepo {
-  listLeads(): Promise<IpLead[]>
-  addLead(input: NewIpLeadInput): Promise<IpLead>
-  addLeads(inputs: NewIpLeadInput[]): Promise<IpLead[]>
+// callers. This is the list EventLeadsView keeps growing over time as new
+// event-sponsorship prospects are found, unlike the seed-data AccountRepo.
+export interface EventLeadRepo {
+  listLeads(): Promise<EventLead[]>
+  addLead(input: NewEventLeadInput): Promise<EventLead>
+  addLeads(inputs: NewEventLeadInput[]): Promise<EventLead[]>
   updateStatus(id: string, status: LeadStatus): Promise<void>
   removeLead(id: string): Promise<void>
 }
 
-function readAll(): IpLead[] {
+function readAll(): EventLead[] {
   if (typeof localStorage === 'undefined') return []
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -26,7 +26,7 @@ function readAll(): IpLead[] {
   }
 }
 
-function writeAll(leads: IpLead[]): void {
+function writeAll(leads: EventLead[]): void {
   if (typeof localStorage === 'undefined') return
   localStorage.setItem(STORAGE_KEY, JSON.stringify(leads))
 }
@@ -36,13 +36,13 @@ function makeId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`
 }
 
-class LocalStorageIpLeadRepo implements IpLeadRepo {
-  async listLeads(): Promise<IpLead[]> {
+class LocalStorageEventLeadRepo implements EventLeadRepo {
+  async listLeads(): Promise<EventLead[]> {
     return readAll().sort((a, b) => b.dateAdded.localeCompare(a.dateAdded))
   }
 
-  async addLead(input: NewIpLeadInput): Promise<IpLead> {
-    const lead: IpLead = {
+  async addLead(input: NewEventLeadInput): Promise<EventLead> {
+    const lead: EventLead = {
       ...input,
       id: makeId(),
       status: input.status ?? 'new',
@@ -52,7 +52,7 @@ class LocalStorageIpLeadRepo implements IpLeadRepo {
     return lead
   }
 
-  async addLeads(inputs: NewIpLeadInput[]): Promise<IpLead[]> {
+  async addLeads(inputs: NewEventLeadInput[]): Promise<EventLead[]> {
     const dateAdded = new Date().toISOString()
     const newLeads = inputs.map((input) => ({
       ...input,
@@ -73,4 +73,4 @@ class LocalStorageIpLeadRepo implements IpLeadRepo {
   }
 }
 
-export const ipLeadRepo: IpLeadRepo = new LocalStorageIpLeadRepo()
+export const eventLeadRepo: EventLeadRepo = new LocalStorageEventLeadRepo()
