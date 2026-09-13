@@ -23,14 +23,15 @@ export type Account = {
   keyDate?: string
 }
 
+/** Shared outreach pipeline stage for every tracked lead list (IP licensees, event prospects). */
+export type LeadStatus = 'new' | 'researching' | 'contacted' | 'qualified' | 'disqualified'
+
 /**
  * A company already known to license IP from another rights holder (Sanrio,
  * Disney, Pokemon, etc). Proven willingness to pay for character licensing
  * makes these warmer than a cold prospect, so they're tracked separately
- * from the outbound search briefs in ProspectView.
+ * from the outbound search briefs.
  */
-export type IpLeadStatus = 'new' | 'researching' | 'contacted' | 'qualified' | 'disqualified'
-
 export type IpLead = {
   id: string
   companyName: string
@@ -38,12 +39,29 @@ export type IpLead = {
   vertical: string
   territory: string
   evidence: string
-  status: IpLeadStatus
+  status: LeadStatus
   dateAdded: string
 }
 
 export type NewIpLeadInput = Omit<IpLead, 'id' | 'dateAdded' | 'status'> & {
-  status?: IpLeadStatus
+  status?: LeadStatus
+}
+
+/** A prospective new event-sponsorship account, not yet in the Events pipeline. */
+export type EventLead = {
+  id: string
+  companyName: string
+  vertical: string
+  territory: string
+  /** Free text: funding raised, disclosed revenue, or other capital signal, with a date. */
+  capitalSignal: string
+  evidence: string
+  status: LeadStatus
+  dateAdded: string
+}
+
+export type NewEventLeadInput = Omit<EventLead, 'id' | 'dateAdded' | 'status'> & {
+  status?: LeadStatus
 }
 
 /**

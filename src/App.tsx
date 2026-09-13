@@ -3,7 +3,7 @@ import { DashboardView } from './views/DashboardView'
 import { EventsView } from './views/EventsView'
 import { LicensingView } from './views/LicensingView'
 import { PlanningView } from './views/PlanningView'
-import { ProspectView } from './views/ProspectView'
+import { EventLeadsView } from './views/EventLeadsView'
 import { IpLeadsView } from './views/IpLeadsView'
 
 const TABS = [
@@ -11,7 +11,7 @@ const TABS = [
   { id: 'events', label: 'Events', Component: EventsView },
   { id: 'licensing', label: 'IP Licensing', Component: LicensingView },
   { id: 'planning', label: 'Planning', Component: PlanningView },
-  { id: 'prospect', label: 'Find new leads', Component: ProspectView },
+  { id: 'event-leads', label: 'Event leads', Component: EventLeadsView },
   { id: 'ip-leads', label: 'IP licensee leads', Component: IpLeadsView },
 ] as const
 

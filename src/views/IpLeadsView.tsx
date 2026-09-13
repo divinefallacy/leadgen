@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { IpLead, IpLeadStatus } from '../types'
+import type { IpLead, LeadStatus } from '../types'
 import { COMMON_LICENSED_IPS, TERRITORIES, VERTICAL_OPTIONS, type Territory } from '../config'
 import { ipLeadRepo } from '../lib/ipLeadsRepo'
 import { ipLeadsToCsv, downloadCsv } from '../lib/csv'
@@ -8,7 +8,7 @@ import { parseBulkLeadReply } from '../lib/ipLeadsImport'
 import { MetricCard } from '../components/MetricCard'
 import { IpLeadRow } from '../components/IpLeadRow'
 
-type StatusFilter = 'all' | IpLeadStatus
+type StatusFilter = 'all' | LeadStatus
 
 const FILTER_TABS: { id: StatusFilter; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -59,7 +59,7 @@ export function IpLeadsView() {
     refresh()
   }
 
-  const handleStatusChange = async (id: string, status: IpLeadStatus) => {
+  const handleStatusChange = async (id: string, status: LeadStatus) => {
     await ipLeadRepo.updateStatus(id, status)
     refresh()
   }

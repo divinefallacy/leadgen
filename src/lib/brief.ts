@@ -3,20 +3,27 @@ import {
   EXCLUSION_OPTIONS,
   VERTICAL_OPTIONS,
   type CapitalSignal,
-  type RevenueLine,
   type Territory,
 } from '../config'
-import type { IpLead } from '../types'
+import type { EventLead, IpLead } from '../types'
 
-export type BriefInputs = {
-  line: RevenueLine
+export type EventLeadBriefInputs = {
   territory: Territory
   verticalIds: Set<string>
   exclusionIds: Set<string>
   capital: CapitalSignal
+  /** Names of real, currently-paying event accounts to benchmark against — pulled from live data, not hardcoded. */
+  benchmarkAccounts: string[]
+  existingLeads: EventLead[]
 }
 
-export function buildBrief(inputs: BriefInputs): string {
+/**
+ * New event-sponsorship prospects, not existing accounts (see EventsView for
+ * those). Benchmarks against the current top-paying Event accounts so the
+ * comparison stays accurate as the pipeline changes, instead of hardcoding
+ * examples that go stale.
+ */
+export function buildEventLeadBrief(inputs: EventLeadBriefInputs): string {
   const verticals = VERTICAL_OPTIONS.filter((v) => inputs.verticalIds.has(v.id))
     .map((v) => v.label)
     .join(', ')
@@ -28,17 +35,23 @@ export function buildBrief(inputs: BriefInputs): string {
   const capitalLabel =
     CAPITAL_SIGNALS.find((c) => c.id === inputs.capital)?.label ?? inputs.capital
 
-  return `Search and generate 20 new leads for Pudgy Penguins Asia.
-Revenue line: ${inputs.line}. Territory: ${inputs.territory}.
+  const benchmarks = inputs.benchmarkAccounts.slice(0, 4).join(', ')
+  const known = inputs.existingLeads
+    .slice(0, 10)
+    .map((l) => l.companyName)
+    .join(', ')
+
+  return `Find 20 new event-sponsorship prospects for Pudgy Penguins Asia.
+Territory: ${inputs.territory}.
 Verticals: ${verticals || 'none selected'}.
 Capital requirement: ${capitalLabel}.
 Hard exclusions: ${exclusions || 'none'}.
-Benchmark against Suplay, Nexpace, Rice Robotics and DYLI — the accounts that
-actually paid and repeated. All have physical or retail distribution, none owns a
-competing character franchise, only one is crypto-native.
-For each lead: company name, vertical, why they fit, capital or revenue signal
-with date, retail/distribution footprint, and the specific Pudgy product format
-to pitch. Flag any funding figure you could not verify.`
+${benchmarks ? `Benchmark against our current top-paying event sponsors: ${benchmarks} — real accounts already paying for Pudgy event presence, not hypothetical fits.` : ''}
+${known ? `Already tracked, don't repeat: ${known}.` : ''}
+Return exactly 20 companies, one per line, pipe-separated in this exact
+order and nothing else — no numbering, no headers, no markdown table, no
+extra commentary before or after the list:
+Company name | Vertical | Capital or revenue signal (with date) | Evidence (source and date)`
 }
 
 export type IpLeadBriefInputs = {

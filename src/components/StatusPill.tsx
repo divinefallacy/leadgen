@@ -1,6 +1,6 @@
-import type { IpLeadStatus } from '../types'
+import type { LeadStatus } from '../types'
 
-const STATUS_STYLES: Record<IpLeadStatus, { label: string; className: string }> = {
+const STATUS_STYLES: Record<LeadStatus, { label: string; className: string }> = {
   new: { label: 'New', className: 'bg-blue-950 text-blue-400 border-blue-900' },
   researching: { label: 'Researching', className: 'bg-amber-950 text-amber-400 border-amber-900' },
   contacted: { label: 'Contacted', className: 'bg-purple-950 text-purple-400 border-purple-900' },
@@ -11,7 +11,7 @@ const STATUS_STYLES: Record<IpLeadStatus, { label: string; className: string }> 
   },
 }
 
-export function StatusPill({ status }: { status: IpLeadStatus }) {
+export function StatusPill({ status }: { status: LeadStatus }) {
   const style = STATUS_STYLES[status]
   return (
     <span

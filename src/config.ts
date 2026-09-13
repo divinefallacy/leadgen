@@ -21,10 +21,6 @@ export const KNOWN_BIG_EVENTS: string[] = [
   'Coinfest',
 ]
 
-export type RevenueLine = 'Licensing' | 'Event sponsorship' | 'Both'
-
-export const REVENUE_LINES: RevenueLine[] = ['Licensing', 'Event sponsorship', 'Both']
-
 export type Territory = 'Southeast Asia' | 'Korea and Japan' | 'Greater China' | 'Wider APAC'
 
 export const TERRITORIES: Territory[] = [
