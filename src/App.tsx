@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { DashboardView } from './views/DashboardView'
 import { EventsView } from './views/EventsView'
 import { LicensingView } from './views/LicensingView'
+import { PlanningView } from './views/PlanningView'
 import { ProspectView } from './views/ProspectView'
 import { IpLeadsView } from './views/IpLeadsView'
 
@@ -9,6 +10,7 @@ const TABS = [
   { id: 'dashboard', label: 'Dashboard', Component: DashboardView },
   { id: 'events', label: 'Events', Component: EventsView },
   { id: 'licensing', label: 'IP Licensing', Component: LicensingView },
+  { id: 'planning', label: 'Planning', Component: PlanningView },
   { id: 'prospect', label: 'Find new leads', Component: ProspectView },
   { id: 'ip-leads', label: 'IP licensee leads', Component: IpLeadsView },
 ] as const
@@ -24,8 +26,8 @@ function App() {
       <header className="border-b border-neutral-800">
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-lg font-semibold">Pudgy APAC Partnership Intelligence</h1>
-            <p className="text-sm text-neutral-500">Igloo APAC · revenue expansion &amp; outbound</p>
+            <h1 className="text-lg font-semibold">Pudgy Penguins Asia Partnership Intelligence</h1>
+            <p className="text-sm text-neutral-500">Pudgy Penguins Asia · revenue expansion &amp; outbound</p>
           </div>
           <nav className="flex flex-wrap gap-1">
             {TABS.map((tab) => (

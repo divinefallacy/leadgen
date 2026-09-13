@@ -2,6 +2,25 @@
 
 export const URGENT_THRESHOLD = 40000
 
+// Licensing goal: at least one deal closed every month, regardless of
+// whether that month has a headline event. Events revenue is expected to
+// concentrate in the big-conference months instead — every other month is
+// licensing's to carry.
+export const LICENSING_MONTHLY_GOAL = 1
+
+// Known headline conferences worth planning Events focus around — seeds the
+// calendar's event-tag input. Freeform entry is still allowed.
+export const KNOWN_BIG_EVENTS: string[] = [
+  'Token2049',
+  'KBW (Korea Blockchain Week)',
+  'Solana Breakpoint',
+  'WebX',
+  'MYBW',
+  'SEABW',
+  'Consensus',
+  'Coinfest',
+]
+
 export type RevenueLine = 'Licensing' | 'Event sponsorship' | 'Both'
 
 export const REVENUE_LINES: RevenueLine[] = ['Licensing', 'Event sponsorship', 'Both']

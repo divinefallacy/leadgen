@@ -3,6 +3,7 @@ import type { Account } from '../types'
 import {
   accountsToAction,
   booked2026,
+  dealsInMonth,
   getDelta,
   isExcludedFromPipeline,
   isUrgent,
@@ -224,5 +225,25 @@ describe('monthlyDealValue', () => {
       makeAccount({ id: 'c', rev2026: 5000, keyDate: '2026-01-08', dealDirection: 'spend_out' }),
     ]
     expect(monthlyDealValue(accounts)).toEqual([])
+  })
+})
+
+describe('dealsInMonth', () => {
+  it('returns only accounts whose keyDate falls in the given month', () => {
+    const accounts = [
+      makeAccount({ id: 'a', name: 'A', keyDate: '2027-03-15' }),
+      makeAccount({ id: 'b', name: 'B', keyDate: '2027-04-01' }),
+      makeAccount({ id: 'c', name: 'C', keyDate: '2027-03-02' }),
+    ]
+    expect(dealsInMonth(accounts, '2027-03').map((a) => a.name)).toEqual(['A', 'C'])
+  })
+
+  it('excludes accounts with no keyDate and dead/spend-out accounts', () => {
+    const accounts = [
+      makeAccount({ id: 'a', keyDate: '2027-03-15' }),
+      makeAccount({ id: 'b', keyDate: '2027-03-15', counterpartyStatus: 'wound_down' }),
+      makeAccount({ id: 'c' }),
+    ]
+    expect(dealsInMonth(accounts, '2027-03')).toHaveLength(1)
   })
 })

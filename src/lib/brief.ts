@@ -28,7 +28,7 @@ export function buildBrief(inputs: BriefInputs): string {
   const capitalLabel =
     CAPITAL_SIGNALS.find((c) => c.id === inputs.capital)?.label ?? inputs.capital
 
-  return `Search and generate 20 new leads for Pudgy Penguins APAC.
+  return `Search and generate 20 new leads for Pudgy Penguins Asia.
 Revenue line: ${inputs.line}. Territory: ${inputs.territory}.
 Verticals: ${verticals || 'none selected'}.
 Capital requirement: ${capitalLabel}.

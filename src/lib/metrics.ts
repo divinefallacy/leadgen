@@ -86,3 +86,8 @@ export function monthlyDealValue(accounts: Account[]): MonthlyValue[] {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([month, value]) => ({ month, value }))
 }
+
+/** Accounts whose keyDate falls in the given 'YYYY-MM' month, excluding dead counterparties/spend-out. */
+export function dealsInMonth(accounts: Account[], month: string): Account[] {
+  return pipelineAccounts(accounts).filter((a) => a.keyDate?.slice(0, 7) === month)
+}

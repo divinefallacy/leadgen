@@ -45,3 +45,19 @@ export type IpLead = {
 export type NewIpLeadInput = Omit<IpLead, 'id' | 'dateAdded' | 'status'> & {
   status?: IpLeadStatus
 }
+
+/**
+ * A forward plan for one calendar month, filled in ahead of time so both
+ * lines can plan the year rather than react to it. Events and Licensing are
+ * planned independently per month — a month can carry both.
+ */
+export type MonthPlan = {
+  /** 'YYYY-MM' */
+  month: string
+  /** Headline events being targeted this month (Token2049, KBW, ...) — presence of any marks it an Events-focus month. */
+  targetEvents: string[]
+  /** Free text: which licensing deal(s) this month is aimed at closing. */
+  licensingTarget: string
+  /** Manually confirmed once the month's licensing goal is actually hit. */
+  licensingGoalMet: boolean
+}
