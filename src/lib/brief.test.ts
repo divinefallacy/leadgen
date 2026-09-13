@@ -47,6 +47,13 @@ describe('buildIpLeadBrief', () => {
     expect(brief).toContain('Lead type (prestige or revenue)')
   })
 
+  it('hard-excludes malls, mall operators, and government/statutory bodies on either tier', () => {
+    const brief = buildIpLeadBrief({ territory: 'Southeast Asia', existingLeads: [] })
+    expect(brief).toContain('shopping malls, mall/property operators')
+    expect(brief).toContain('government agencies, statutory boards, tourism boards')
+    expect(brief).toContain('Only include a company that would itself sign and pay the')
+  })
+
   it('lists already-tracked companies so they are not repeated', () => {
     const brief = buildIpLeadBrief({
       territory: 'Southeast Asia',

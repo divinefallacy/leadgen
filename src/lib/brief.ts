@@ -99,6 +99,14 @@ and ability to pay, not brand prestige — these convert to real Pudgy
 revenue faster than a prestige partner does.
 
 Not companies that own their own competing character IP, on either tier.
+Hard exclude, on either tier: shopping malls, mall/property operators,
+government agencies, statutory boards, tourism boards, and any
+government-affiliated association. Malls and government bodies routinely
+host or display licensed characters, but the mall or agency itself rarely
+has commercial budget or authority to pay for a license — the actual
+payer there is usually a tenant retailer or a private event organizer, not
+the venue. Only include a company that would itself sign and pay the
+license.
 ${known ? `Already tracked, don't repeat: ${known}.` : ''}
 Return exactly 20 companies, one per line, pipe-separated in this exact
 order and nothing else — no numbering, no headers, no markdown table, no

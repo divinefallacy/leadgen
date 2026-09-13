@@ -12,9 +12,13 @@ export function PerformanceDashboard({ accounts, revenueLabel }: { accounts: Acc
   return (
     <div className="flex flex-col gap-4 rounded border border-neutral-800 bg-neutral-950 p-4">
       <StatHero label={revenueLabel} value={formatCompactCurrency(booked2026(accounts))} />
-      <div className="grid gap-4 lg:grid-cols-2">
-        <TopAccountsBarChart rows={topAccounts} title="Top accounts by 2026 revenue" />
-        <MonthlyTrendChart rows={monthly} title="Monthly deal value (by signed/start date)" />
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="min-w-0">
+          <TopAccountsBarChart rows={topAccounts} title="Top accounts by 2026 revenue" />
+        </div>
+        <div className="min-w-0">
+          <MonthlyTrendChart rows={monthly} title="Monthly deal value (by signed/start date)" />
+        </div>
       </div>
     </div>
   )
