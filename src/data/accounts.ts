@@ -377,6 +377,7 @@ export const accounts: Account[] = [
     rev2026: 10500,
     action: 'repeat',
     note: 'PIC Woohyun Chong, Ian Lim (Utah, BD). Prior sponsorship: SEABW 2026. Targeting KBW 2026, Token2049 2026 for 2026. Contract signed August 24, 2026.',
+    keyDate: '2026-08-24',
   },
   {
     id: 'orange-cap-games-apac',
@@ -403,6 +404,7 @@ export const accounts: Account[] = [
     rev2026: 8000,
     action: 'repeat',
     note: 'PIC Pat L (Yu Jin, APAC Community Manager). Prior sponsorship: SEABW 2026. Targeting WebX 2026 for 2026. Contract signed June 30, 2026.',
+    keyDate: '2026-06-30',
   },
   {
     id: 'rice-ai-event',
@@ -494,6 +496,7 @@ export const accounts: Account[] = [
     rev2026: 2000,
     action: 'cross',
     note: 'PIC Ian Lim (Amber, Marketing Director). Targeting WebX 2026 for 2026. Contract signed June 30, 2026.',
+    keyDate: '2026-06-30',
   },
   {
     id: 'btse',
@@ -507,6 +510,7 @@ export const accounts: Account[] = [
     rev2026: 800,
     action: 'cross',
     note: 'PIC Pat L (Carrie, Events Manager). Targeting WebX 2026 for 2026. Contract signed June 30, 2026.',
+    keyDate: '2026-06-30',
   },
   {
     id: 'dyli',
@@ -520,6 +524,7 @@ export const accounts: Account[] = [
     rev2026: 20000,
     action: 'cross',
     note: 'PIC Swam S (Scott, CMO). Targeting KBW 2026, MYBW 2026, Token2049 2026 for 2026. Contract signed July 1, 2026.',
+    keyDate: '2026-07-01',
   },
   {
     id: 'msx',
@@ -559,6 +564,7 @@ export const accounts: Account[] = [
     rev2026: 14361,
     action: 'cross',
     note: 'PIC Ian Lim, Jamie (Samuel, COO). Targeting MYBW 2026 for 2026. Contract signed August 15, 2026.',
+    keyDate: '2026-08-15',
   },
   {
     id: 'ccacc',
@@ -572,6 +578,7 @@ export const accounts: Account[] = [
     rev2026: 2000,
     action: 'cross',
     note: 'PIC Ian Lim (Jonathan, Head of CCACC). Targeting MYBW 2026 for 2026. Contract signed July 23, 2026.',
+    keyDate: '2026-07-23',
   },
   {
     id: 'deepcoin',
@@ -585,6 +592,7 @@ export const accounts: Account[] = [
     rev2026: 5000,
     action: 'cross',
     note: 'PIC Zhang JY (Evie, KOL & Community Operation Manager). Targeting Taiwan 2026 for 2026. Contract signed September 1, 2026.',
+    keyDate: '2026-09-01',
   },
   {
     id: 'weex',
@@ -598,6 +606,7 @@ export const accounts: Account[] = [
     rev2026: 20000,
     action: 'cross',
     note: 'PIC Ian Lim (Seren, Marketing Specialist). Targeting KBW 2026 for 2026. Contract signed September 7, 2026.',
+    keyDate: '2026-09-07',
   },
   {
     id: 'fomo',
@@ -611,6 +620,7 @@ export const accounts: Account[] = [
     rev2026: 90000,
     action: 'cross',
     note: 'PIC Brian Hong. Targeting KBW 2026 for 2026. Contract signed August 15, 2026.',
+    keyDate: '2026-08-15',
   },
   {
     id: 'solana-apac',
@@ -624,6 +634,7 @@ export const accounts: Account[] = [
     rev2026: 12500,
     action: 'cross',
     note: 'PIC Ian Lim (Yaoyao, Growth). Targeting Token2049 2026 for 2026. Contract signed September 7, 2026.',
+    keyDate: '2026-09-07',
   },
   {
     id: 'michelin-licensing',
@@ -636,7 +647,8 @@ export const accounts: Account[] = [
     rev2025: 0,
     rev2026: 5000,
     action: 'cross',
-    note: 'Owner Swam S. Licensing fee: tranche 1 of $10k annual fee ($5k received Nov 15, 2025). Effective Jan 8, 2026. Term: January 8, 2026 (12 months). GTM date: December 6, 2025. Projected revenue: $10,000.00. Status: In progress.',
+    note: 'Owner Swam S. Licensing fee: tranche 1 of $10k annual fee ($5k received Nov 15, 2025). Effective Jan 8, 2026. Term: January 8, 2026 (12 months). Started December 6, 2025. GTM date: December 6, 2025. Projected revenue: $10,000.00. Status: In progress.',
+    keyDate: '2025-12-06',
   },
   {
     id: 'rice-ai-licensing',
@@ -649,7 +661,8 @@ export const accounts: Account[] = [
     rev2025: 20000,
     rev2026: 0,
     action: 'lapse',
-    note: 'Owner Swam S. Royalty: 15% of net revenue. Licensing: $15k + $10k bonus after 500 units; renegotiate after 800 units. Legal: Ok to continue. Term: July 13, 2025 → July 13, 2026. GTM date: October 1, 2026. Projected revenue: $70,000.00. Status: Done. Link: https://docs.google.com/document/d/14GTrOsAxN4oVfVfyEHvHysUwv_6iKkLBjOaIbAQ8I_k/edit?usp=sharing',
+    note: 'Owner Swam S. Royalty: 15% of net revenue. Licensing: $15k + $10k bonus after 500 units; renegotiate after 800 units. Legal: Ok to continue. Term: July 13, 2025 → July 13, 2026. Started August 31, 2026. GTM date: October 1, 2026. Projected revenue: $70,000.00. Status: Done. Link: https://docs.google.com/document/d/14GTrOsAxN4oVfVfyEHvHysUwv_6iKkLBjOaIbAQ8I_k/edit?usp=sharing',
+    keyDate: '2026-08-31',
   },
   {
     id: 'tollan',
@@ -663,6 +676,7 @@ export const accounts: Account[] = [
     rev2026: 0,
     action: 'cold',
     note: 'Owner Swam S. Term: May 15, 2026 (4 weeks). Status: Not started. Link: https://www.notion.so/tollan/SHARED-Pudgy-Penguins-Tollan-Universe-Limited-time-Crossover-Event-Proposal-350dd29885a88077b564db127e8eda56?source=copy_link',
+    keyDate: '2026-05-15',
   },
   {
     id: 'cobak',
@@ -688,8 +702,9 @@ export const accounts: Account[] = [
     rev2025: 200000,
     rev2026: 0,
     action: 'lapse',
-    note: 'Owner Ian Lim. 2025-07-31: Licensing Fee installment 1 ($100k), royalty product yet to launch. 2026-05-28: Licensing Fee installment 2 ($100k) raised. Legal: Let\'s not extend this contract. Term: May 18, 2025 → December 31, 2026 (18 months). GTM date: June 1, 2026. Projected revenue: $0.00. Total cost booked: $10,000.00. Status: In progress. Link: https://acrobat.adobe.com/id/urn:aaid:sc:ap:8dcd4040-d6e7-4a3c-8756-946967187fcf',
+    note: 'Owner Ian Lim. 2025-07-31: Licensing Fee installment 1 ($100k), royalty product yet to launch. 2026-05-28: Licensing Fee installment 2 ($100k) raised. Legal: Let\'s not extend this contract. Term: May 18, 2025 → December 31, 2026 (18 months). Started May 18, 2025. GTM date: June 1, 2026. Projected revenue: $0.00. Total cost booked: $10,000.00. Status: In progress. Link: https://acrobat.adobe.com/id/urn:aaid:sc:ap:8dcd4040-d6e7-4a3c-8756-946967187fcf',
     dataIssue: 'Realized Revenue 2026 column reads $0 even though the comments log a second $100k installment raised 2026-05-28. rev2026 is left at $0 pending confirmation from finance; the note below carries the installment detail.',
+    keyDate: '2025-05-18',
   },
   {
     id: 'sbs-drama-studio-s',
@@ -703,6 +718,7 @@ export const accounts: Account[] = [
     rev2026: 0,
     action: 'cold',
     note: 'Owner Woohyun Chong. Term: April 1, 2026. GTM date: April 1, 2027. Status: In progress.',
+    keyDate: '2026-04-01',
   },
   {
     id: 'maple-story-universe',
@@ -715,7 +731,8 @@ export const accounts: Account[] = [
     rev2025: 0,
     rev2026: 36912,
     action: 'cross',
-    note: 'Owner Swam S. Royalty settlement: $21,911.51 (30% rev share on 7,295 items sold Jan 8–Feb 26; settled Apr 21 via NXPC→USDT @ 0.2943). Licensing fee invoice: $15,000 (invoice raised May 22). Term: Jan 8, 2026 – Jan 7, 2027. Term: January 8, 2026 → January 7, 2027 (One-off). GTM date: February 26, 2026. Projected revenue: $30,000.00. Status: Done.',
+    note: 'Owner Swam S. Royalty settlement: $21,911.51 (30% rev share on 7,295 items sold Jan 8–Feb 26; settled Apr 21 via NXPC→USDT @ 0.2943). Licensing fee invoice: $15,000 (invoice raised May 22). Term: Jan 8, 2026 – Jan 7, 2027. Term: January 8, 2026 → January 7, 2027 (One-off). Started February 26, 2026. GTM date: February 26, 2026. Projected revenue: $30,000.00. Status: Done.',
+    keyDate: '2026-02-26',
   },
   {
     id: 'flyco',
@@ -806,7 +823,8 @@ export const accounts: Account[] = [
     rev2025: 0,
     rev2026: 50000,
     action: 'cross',
-    note: 'Owner Ian Lim. CEX partnership. Note: This is with Pudgy Penguins, Inc. Legal: Ok to continue. Term: July 16, 2026 → July 16, 2027 (1 Year). GTM date: August 4, 2026. Projected revenue: $50,000.00. Status: In progress. Link: https://acrobat.adobe.com/id/urn:aaid:sc:ap:f99045ca-d837-4c88-b401-1a6bf4169004',
+    note: 'Owner Ian Lim. CEX partnership. Note: This is with Pudgy Penguins, Inc. Legal: Ok to continue. Term: July 16, 2026 → July 16, 2027 (1 Year). Started July 16, 2026. GTM date: August 4, 2026. Projected revenue: $50,000.00. Status: In progress. Link: https://acrobat.adobe.com/id/urn:aaid:sc:ap:f99045ca-d837-4c88-b401-1a6bf4169004',
+    keyDate: '2026-07-16',
   },
   {
     id: 'adi',

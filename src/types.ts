@@ -19,6 +19,8 @@ export type Account = {
   action: Action
   note: string
   dataIssue?: string
+  /** ISO date (YYYY-MM-DD) the deal was signed or started, when known — drives the monthly trend chart. */
+  keyDate?: string
 }
 
 /**

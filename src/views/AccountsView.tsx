@@ -13,6 +13,7 @@ import { accountsToCsv, downloadCsv } from '../lib/csv'
 import { MetricCard } from '../components/MetricCard'
 import { FilterTabs, type AccountFilter } from '../components/FilterTabs'
 import { AccountRow } from '../components/AccountRow'
+import { PerformanceDashboard } from '../components/PerformanceDashboard'
 
 function matchesFilter(account: Account, filter: AccountFilter): boolean {
   switch (filter) {
@@ -60,6 +61,8 @@ export function AccountsView({ line, title }: { line: 'Event' | 'Licensing'; tit
   return (
     <div className="flex flex-col gap-6">
       <h2 className="text-lg font-semibold text-neutral-100">{title}</h2>
+
+      <PerformanceDashboard accounts={lineAccounts} revenueLabel={`${title} revenue (2026 booked)`} />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <MetricCard label="Revenue at risk" value={formatCurrency(revenueAtRisk(lineAccounts))} tone="red" />
