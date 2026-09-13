@@ -1,4 +1,14 @@
-import type { Account } from '../types'
+import type { Account, IpLead } from '../types'
+
+const IP_LEAD_HEADERS = [
+  'companyName',
+  'licensedIp',
+  'vertical',
+  'territory',
+  'status',
+  'evidence',
+  'dateAdded',
+] as const
 
 const HEADERS = [
   'name',
@@ -43,6 +53,15 @@ export function accountsToCsv(accounts: Account[]): string {
       .join(','),
   )
   return [HEADERS.join(','), ...rows].join('\n')
+}
+
+export function ipLeadsToCsv(leads: IpLead[]): string {
+  const rows = leads.map((l) =>
+    [l.companyName, l.licensedIp, l.vertical, l.territory, l.status, l.evidence, l.dateAdded]
+      .map(escapeCsvCell)
+      .join(','),
+  )
+  return [IP_LEAD_HEADERS.join(','), ...rows].join('\n')
 }
 
 export function downloadCsv(filename: string, csv: string): void {

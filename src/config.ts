@@ -75,3 +75,22 @@ export const CAPITAL_SIGNALS: { id: CapitalSignal; label: string }[] = [
 ]
 
 export const DEFAULT_CAPITAL_SIGNAL: CapitalSignal = 'raised_or_revenue_18mo'
+
+// Common character/IP licensors worth searching against — a company already
+// paying one of these for a character license is a warmer Pudgy prospect
+// than a cold outbound target. Freeform entry is still allowed; this just
+// seeds the datalist.
+export const COMMON_LICENSED_IPS: string[] = [
+  'Sanrio (Hello Kitty)',
+  'Disney',
+  'The Pokemon Company',
+  'Line Friends',
+  'Kakao Friends',
+  'Warner Bros. Discovery',
+  'Universal',
+  'Sesame Workshop',
+  'Mattel',
+  'Hasbro',
+  'San-X (Rilakkuma)',
+  'Moomin Characters',
+]
