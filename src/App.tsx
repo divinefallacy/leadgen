@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { AccountsView } from './views/AccountsView'
 import { ProspectView } from './views/ProspectView'
+import { IpLeadsView } from './views/IpLeadsView'
 
-type View = 'accounts' | 'prospect'
+type View = 'accounts' | 'prospect' | 'ip-leads'
 
 function App() {
   const [view, setView] = useState<View>('accounts')
@@ -38,12 +39,25 @@ function App() {
             >
               Find new leads
             </button>
+            <button
+              type="button"
+              onClick={() => setView('ip-leads')}
+              className={`rounded px-3 py-1.5 text-sm ${
+                view === 'ip-leads'
+                  ? 'bg-neutral-800 text-neutral-100'
+                  : 'text-neutral-400 hover:text-neutral-200'
+              }`}
+            >
+              IP licensee leads
+            </button>
           </nav>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-6">
-        {view === 'accounts' ? <AccountsView /> : <ProspectView />}
+        {view === 'accounts' && <AccountsView />}
+        {view === 'prospect' && <ProspectView />}
+        {view === 'ip-leads' && <IpLeadsView />}
       </main>
     </div>
   )

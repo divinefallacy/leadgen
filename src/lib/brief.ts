@@ -6,6 +6,7 @@ import {
   type RevenueLine,
   type Territory,
 } from '../config'
+import type { IpLead } from '../types'
 
 export type BriefInputs = {
   line: RevenueLine
@@ -38,4 +39,35 @@ competing character franchise, only one is crypto-native.
 For each lead: company name, vertical, why they fit, capital or revenue signal
 with date, retail/distribution footprint, and the specific Pudgy product format
 to pitch. Flag any funding figure you could not verify.`
+}
+
+export type IpLeadBriefInputs = {
+  territory: Territory
+  licensedIp?: string
+  existingLeads: IpLead[]
+}
+
+/**
+ * A company already paying to license someone else's characters (Sanrio,
+ * Disney, Pokemon...) has demonstrated it will pay for exactly the thing
+ * Pudgy sells, which makes it a warmer prospect than a cold outbound lead.
+ * This brief targets that specific signal instead of the general criteria
+ * in buildBrief.
+ */
+export function buildIpLeadBrief(inputs: IpLeadBriefInputs): string {
+  const ipFocus = inputs.licensedIp?.trim() || 'Sanrio, Disney, Pokemon, or any other major character IP'
+  const known = inputs.existingLeads
+    .slice(0, 10)
+    .map((l) => `${l.companyName} (${l.licensedIp})`)
+    .join(', ')
+
+  return `Find companies in ${inputs.territory} that currently hold a paid character
+licensing deal with ${ipFocus} for retail products, packaging, or in-store
+promotions — not companies that own their own competing character IP.
+Already paying to license someone else's characters is the target signal:
+it proves budget and appetite for exactly what Pudgy Penguins sells.
+${known ? `Already tracked, don't repeat: ${known}.` : ''}
+For each company: name, which IP they license, vertical, evidence of the
+existing license (retailer listing, press release, packaging photo) with a
+date or source, and why a Pudgy license fits alongside or after it.`
 }
