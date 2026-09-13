@@ -61,27 +61,47 @@ export type IpLeadBriefInputs = {
 }
 
 /**
- * A company already paying to license someone else's characters (Sanrio,
- * Disney, Pokemon...) has demonstrated it will pay for exactly the thing
- * Pudgy sells, which makes it a warmer prospect than a cold outbound lead.
- * This brief targets that specific signal instead of the general criteria
- * in buildBrief.
+ * A company already paying to license someone else's characters has
+ * demonstrated appetite for exactly what Pudgy sells — but "already
+ * licenses IP" hides two very different prospects. A company partnered
+ * with Disney or Sanrio is a prestige get with real brand halo, but those
+ * deals are often reciprocal or promotional rather than a straight paid
+ * license — don't expect them to pay Pudgy well just because they sit next
+ * to a famous name. A company paying real, disclosed fees for a smaller or
+ * less iconic IP has proven the opposite: genuine budget and willingness to
+ * pay, regardless of prestige. This brief asks for both, explicitly split,
+ * so outreach doesn't confuse a brand-exposure play with a revenue lead.
  */
 export function buildIpLeadBrief(inputs: IpLeadBriefInputs): string {
-  const ipFocus = inputs.licensedIp?.trim() || 'Sanrio, Disney, Pokemon, or any other major character IP'
+  const ipFocus = inputs.licensedIp?.trim() || 'Disney, Sanrio, Marvel, Pokemon, Hello Kitty, or another top-tier globally iconic IP'
   const known = inputs.existingLeads
     .slice(0, 10)
     .map((l) => `${l.companyName} (${l.licensedIp})`)
     .join(', ')
 
-  return `Find 20 companies in ${inputs.territory} that currently hold a paid character
-licensing deal with ${ipFocus} for retail products, packaging, or in-store
-promotions — not companies that own their own competing character IP.
-Already paying to license someone else's characters is the target signal:
-it proves budget and appetite for exactly what Pudgy Penguins sells.
+  return `Find 20 companies in ${inputs.territory} with a character-licensing
+signal, split across two different lead types — search for both, don't
+blend them into one undifferentiated list.
+
+TIER 1 — Prestige partners (aim for 10): companies currently licensing
+${ipFocus} for retail products, packaging, or in-store promotions. These
+deals are usually about brand halo and reach, not big licensing fees —
+note if it looks reciprocal or promotional rather than a straight paid
+license. Valuable for Pudgy's own exposure even when the direct revenue
+looks modest.
+
+TIER 2 — Revenue-focused licensees (aim for 10): companies that clearly
+pay real money for character licensing, even from a smaller or less
+iconic IP (Line Friends, Kakao Friends, a regional mascot, etc.) —
+disclosed licensing fees, frequent paid collabs, or a track record of
+character-driven product lines. The signal is demonstrated willingness
+and ability to pay, not brand prestige — these convert to real Pudgy
+revenue faster than a prestige partner does.
+
+Not companies that own their own competing character IP, on either tier.
 ${known ? `Already tracked, don't repeat: ${known}.` : ''}
 Return exactly 20 companies, one per line, pipe-separated in this exact
 order and nothing else — no numbering, no headers, no markdown table, no
 extra commentary before or after the list:
-Company name | Licensed IP | Vertical | Evidence (source and date)`
+Company name | Licensed IP | Vertical | Lead type (prestige or revenue) | Evidence (source and date)`
 }

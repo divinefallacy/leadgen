@@ -9,6 +9,7 @@ function makeLead(overrides: Partial<IpLead>): IpLead {
     licensedIp: 'Sanrio (Hello Kitty)',
     vertical: 'F&B and QSR chains',
     territory: 'Southeast Asia',
+    dealType: 'prestige',
     evidence: '',
     status: 'new',
     dateAdded: '2026-01-01T00:00:00.000Z',
@@ -19,7 +20,7 @@ function makeLead(overrides: Partial<IpLead>): IpLead {
 describe('buildIpLeadBrief', () => {
   it('defaults the IP focus when none is given', () => {
     const brief = buildIpLeadBrief({ territory: 'Southeast Asia', existingLeads: [] })
-    expect(brief).toContain('Sanrio, Disney, Pokemon')
+    expect(brief).toContain('Disney, Sanrio, Marvel, Pokemon, Hello Kitty')
     expect(brief).toContain('Southeast Asia')
   })
 
@@ -30,7 +31,20 @@ describe('buildIpLeadBrief', () => {
       existingLeads: [],
     })
     expect(brief).toContain('Line Friends')
-    expect(brief).not.toContain('Sanrio, Disney, Pokemon')
+    expect(brief).not.toContain('Disney, Sanrio, Marvel, Pokemon, Hello Kitty')
+  })
+
+  it('asks for both the prestige and revenue-focused tiers, explicitly split', () => {
+    const brief = buildIpLeadBrief({ territory: 'Southeast Asia', existingLeads: [] })
+    expect(brief).toContain('TIER 1')
+    expect(brief).toContain('Prestige partners')
+    expect(brief).toContain('TIER 2')
+    expect(brief).toContain('Revenue-focused licensees')
+  })
+
+  it('requires the output format to carry a lead-type column', () => {
+    const brief = buildIpLeadBrief({ territory: 'Southeast Asia', existingLeads: [] })
+    expect(brief).toContain('Lead type (prestige or revenue)')
   })
 
   it('lists already-tracked companies so they are not repeated', () => {

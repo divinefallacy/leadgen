@@ -1,5 +1,6 @@
 import type { IpLead, LeadStatus } from '../types'
 import { StatusPill } from './StatusPill'
+import { DealTypePill } from './DealTypePill'
 
 const STATUS_OPTIONS: LeadStatus[] = [
   'new',
@@ -28,6 +29,7 @@ export function IpLeadRow({
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-medium text-neutral-100">{lead.companyName}</span>
           <StatusPill status={lead.status} />
+          <DealTypePill dealType={lead.dealType} />
         </div>
         <div className="text-xs text-neutral-500">
           Licenses {lead.licensedIp} · {lead.vertical} · {lead.territory}

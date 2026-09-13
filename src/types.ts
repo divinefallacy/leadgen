@@ -27,6 +27,16 @@ export type Account = {
 export type LeadStatus = 'new' | 'researching' | 'contacted' | 'qualified' | 'disqualified'
 
 /**
+ * Not every company licensing character IP is equally likely to pay Pudgy:
+ * a top-tier globally iconic IP partnership is often reciprocal/promotional
+ * (brand halo, little direct revenue), while a smaller or less iconic IP
+ * deal with real disclosed fees signals genuine willingness and ability to
+ * pay. Both are worth pursuing, for different reasons — tracked separately
+ * so outreach doesn't treat them the same.
+ */
+export type IpLeadDealType = 'prestige' | 'revenue'
+
+/**
  * A company already known to license IP from another rights holder (Sanrio,
  * Disney, Pokemon, etc). Proven willingness to pay for character licensing
  * makes these warmer than a cold prospect, so they're tracked separately
@@ -38,6 +48,7 @@ export type IpLead = {
   licensedIp: string
   vertical: string
   territory: string
+  dealType: IpLeadDealType
   evidence: string
   status: LeadStatus
   dateAdded: string

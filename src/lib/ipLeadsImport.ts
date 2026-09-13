@@ -1,7 +1,10 @@
+import type { IpLeadDealType } from '../types'
+
 export type ParsedLead = {
   companyName: string
   licensedIp: string
   vertical: string
+  dealType: IpLeadDealType
   evidence: string
 }
 
@@ -11,6 +14,11 @@ function isSeparatorRow(cells: string[]): boolean {
 
 function isHeaderRow(companyName: string, licensedIp: string): boolean {
   return /^company( name)?$/i.test(companyName) && /^licensed/i.test(licensedIp)
+}
+
+/** Normalizes the model's free-text lead-type cell — defaults to the more conservative 'prestige' when ambiguous. */
+function normalizeDealType(raw: string): IpLeadDealType {
+  return /revenue/i.test(raw) ? 'revenue' : 'prestige'
 }
 
 /**
@@ -37,10 +45,10 @@ export function parseBulkLeadReply(text: string, limit = 20): ParsedLead[] {
       .map((c) => c.trim())
     if (cells.length < 2 || isSeparatorRow(cells)) continue
 
-    const [companyName, licensedIp, vertical = '', evidence = ''] = cells
+    const [companyName, licensedIp, vertical = '', dealTypeRaw = '', evidence = ''] = cells
     if (!companyName || !licensedIp || isHeaderRow(companyName, licensedIp)) continue
 
-    results.push({ companyName, licensedIp, vertical, evidence })
+    results.push({ companyName, licensedIp, vertical, dealType: normalizeDealType(dealTypeRaw), evidence })
   }
 
   return results

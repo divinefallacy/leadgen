@@ -5,6 +5,7 @@ const IP_LEAD_HEADERS = [
   'licensedIp',
   'vertical',
   'territory',
+  'dealType',
   'status',
   'evidence',
   'dateAdded',
@@ -67,7 +68,7 @@ export function accountsToCsv(accounts: Account[]): string {
 
 export function ipLeadsToCsv(leads: IpLead[]): string {
   const rows = leads.map((l) =>
-    [l.companyName, l.licensedIp, l.vertical, l.territory, l.status, l.evidence, l.dateAdded]
+    [l.companyName, l.licensedIp, l.vertical, l.territory, l.dealType, l.status, l.evidence, l.dateAdded]
       .map(escapeCsvCell)
       .join(','),
   )

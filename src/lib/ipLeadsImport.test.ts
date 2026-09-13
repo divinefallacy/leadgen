@@ -2,51 +2,71 @@ import { describe, expect, it } from 'vitest'
 import { parseBulkLeadReply } from './ipLeadsImport'
 
 describe('parseBulkLeadReply', () => {
-  it('parses plain pipe-delimited lines', () => {
-    const text = `Ministop | Sanrio (Hello Kitty) | Convenience and grocery | In-store combo, Aug 2026
-7-Eleven Korea | Line Friends | Convenience and grocery | Packaging spotted Jul 2026`
+  it('parses plain pipe-delimited lines with a lead-type column', () => {
+    const text = `Ministop | Sanrio (Hello Kitty) | Convenience and grocery | prestige | In-store combo, Aug 2026
+7-Eleven Korea | Line Friends | Convenience and grocery | revenue | Disclosed $200k licensing fee, Jul 2026`
     const parsed = parseBulkLeadReply(text)
     expect(parsed).toEqual([
       {
         companyName: 'Ministop',
         licensedIp: 'Sanrio (Hello Kitty)',
         vertical: 'Convenience and grocery',
+        dealType: 'prestige',
         evidence: 'In-store combo, Aug 2026',
       },
       {
         companyName: '7-Eleven Korea',
         licensedIp: 'Line Friends',
         vertical: 'Convenience and grocery',
-        evidence: 'Packaging spotted Jul 2026',
+        dealType: 'revenue',
+        evidence: 'Disclosed $200k licensing fee, Jul 2026',
       },
     ])
   })
 
+  it('normalizes an unrecognized lead-type cell to the conservative "prestige" default', () => {
+    const parsed = parseBulkLeadReply('Ministop | Sanrio | Convenience | unclear | some evidence')
+    expect(parsed[0]?.dealType).toBe('prestige')
+  })
+
+  it('matches "revenue" case-insensitively even with extra wording', () => {
+    const parsed = parseBulkLeadReply('Ministop | Sanrio | Convenience | Revenue-focused | some evidence')
+    expect(parsed[0]?.dealType).toBe('revenue')
+  })
+
   it('skips a markdown table header and separator row', () => {
-    const text = `| Company | Licensed IP | Vertical | Evidence |
-| --- | --- | --- | --- |
-| Ministop | Sanrio | Convenience | seen in-store |`
+    const text = `| Company | Licensed IP | Vertical | Lead Type | Evidence |
+| --- | --- | --- | --- | --- |
+| Ministop | Sanrio | Convenience | prestige | seen in-store |`
     const parsed = parseBulkLeadReply(text)
     expect(parsed).toEqual([
-      { companyName: 'Ministop', licensedIp: 'Sanrio', vertical: 'Convenience', evidence: 'seen in-store' },
+      {
+        companyName: 'Ministop',
+        licensedIp: 'Sanrio',
+        vertical: 'Convenience',
+        dealType: 'prestige',
+        evidence: 'seen in-store',
+      },
     ])
   })
 
   it('ignores preamble and closing commentary without pipes', () => {
     const text = `Here are 20 companies matching your criteria:
-Ministop | Sanrio | Convenience | seen in-store
+Ministop | Sanrio | Convenience | prestige | seen in-store
 Hope this helps with your outreach!`
     expect(parseBulkLeadReply(text)).toHaveLength(1)
   })
 
   it('defaults vertical and evidence to empty strings when omitted', () => {
     const parsed = parseBulkLeadReply('Ministop | Sanrio')
-    expect(parsed).toEqual([{ companyName: 'Ministop', licensedIp: 'Sanrio', vertical: '', evidence: '' }])
+    expect(parsed).toEqual([
+      { companyName: 'Ministop', licensedIp: 'Sanrio', vertical: '', dealType: 'prestige', evidence: '' },
+    ])
   })
 
   it('skips lines missing a company name or licensed IP', () => {
     const text = `| Sanrio
-Ministop |  | Convenience | seen in-store`
+Ministop |  | Convenience | prestige | seen in-store`
     expect(parseBulkLeadReply(text)).toEqual([])
   })
 
