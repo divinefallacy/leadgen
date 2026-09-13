@@ -9,6 +9,7 @@ const STORAGE_KEY = 'leadgen.ipLeads.v1'
 export interface IpLeadRepo {
   listLeads(): Promise<IpLead[]>
   addLead(input: NewIpLeadInput): Promise<IpLead>
+  addLeads(inputs: NewIpLeadInput[]): Promise<IpLead[]>
   updateStatus(id: string, status: IpLeadStatus): Promise<void>
   removeLead(id: string): Promise<void>
 }
@@ -49,6 +50,18 @@ class LocalStorageIpLeadRepo implements IpLeadRepo {
     }
     writeAll([...readAll(), lead])
     return lead
+  }
+
+  async addLeads(inputs: NewIpLeadInput[]): Promise<IpLead[]> {
+    const dateAdded = new Date().toISOString()
+    const newLeads = inputs.map((input) => ({
+      ...input,
+      id: makeId(),
+      status: input.status ?? 'new',
+      dateAdded,
+    }))
+    writeAll([...readAll(), ...newLeads])
+    return newLeads
   }
 
   async updateStatus(id: string, status: IpLeadStatus): Promise<void> {

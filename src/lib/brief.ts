@@ -61,13 +61,14 @@ export function buildIpLeadBrief(inputs: IpLeadBriefInputs): string {
     .map((l) => `${l.companyName} (${l.licensedIp})`)
     .join(', ')
 
-  return `Find companies in ${inputs.territory} that currently hold a paid character
+  return `Find 20 companies in ${inputs.territory} that currently hold a paid character
 licensing deal with ${ipFocus} for retail products, packaging, or in-store
 promotions — not companies that own their own competing character IP.
 Already paying to license someone else's characters is the target signal:
 it proves budget and appetite for exactly what Pudgy Penguins sells.
 ${known ? `Already tracked, don't repeat: ${known}.` : ''}
-For each company: name, which IP they license, vertical, evidence of the
-existing license (retailer listing, press release, packaging photo) with a
-date or source, and why a Pudgy license fits alongside or after it.`
+Return exactly 20 companies, one per line, pipe-separated in this exact
+order and nothing else — no numbering, no headers, no markdown table, no
+extra commentary before or after the list:
+Company name | Licensed IP | Vertical | Evidence (source and date)`
 }
