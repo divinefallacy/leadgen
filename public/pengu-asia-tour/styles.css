@@ -1,25 +1,28 @@
 :root {
-  --bg: #eaf1ff;
+  /* Official Pudgy Penguins brand palette (Brand Guidelines Dec 2025 v1.0) */
+  --bg: #f3fbff;         /* Blizzard */
   --bg-elev: #ffffff;
-  --bg-elev-2: #f3f7ff;
-  --line: rgba(27, 37, 89, 0.1);
-  --blue: #4b6ef5;
-  --blue-dark: #1b2559;
-  --blue-light: #7c93ff;
-  --blue-soft: #dce6ff;
-  --pink: #ff6fa8;
-  --pink-soft: #ffd6e7;
-  --green: #58b83f;
-  --green-soft: #e3f6da;
-  --gold: #f5c242;
-  --gold-soft: #fdf0cf;
-  --text: #1b2559;
-  --text-dim: #5b6b99;
-  --text-faint: #8a96bf;
-  --ok: #2fae5a;
+  --bg-elev-2: #e7f5f9;  /* Azure */
+  --line: rgba(0, 20, 45, 0.1);
+  --blue: #477df6;       /* Crayola Blue */
+  --blue-dark: #00142d;  /* Oxford Blue */
+  --blue-light: #81abff; /* Pengu Blue */
+  --blue-soft: #e7f5f9;  /* Azure */
+  --pink: #ee8888;       /* Blush */
+  --pink-soft: #fae7f1;  /* Polly Pink */
+  --plum: #f0a1f9;       /* Plum */
+  --green: #a7fb97;      /* Mint */
+  --green-soft: #e6fbe1; /* Mint, lightened */
+  --gold: #f9de90;       /* Jasmine */
+  --gold-soft: #fcf0d0;  /* Jasmine, lightened */
+  --cream: #f9f5e9;      /* Creamy */
+  --text: #00142d;
+  --text-dim: #4a5a75;
+  --text-faint: #7c8aa8;
+  --ok: #00142d;
   --radius: 20px;
   --maxw: 1180px;
-  --shadow: 0 20px 45px -18px rgba(27, 37, 89, 0.22);
+  --shadow: 0 20px 45px -18px rgba(0, 20, 45, 0.22);
   color-scheme: light;
 }
 
@@ -96,9 +99,9 @@ button { font: inherit; cursor: pointer; }
 .btn-primary {
   background: var(--blue);
   color: #fff;
-  box-shadow: 0 10px 24px -8px rgba(75, 110, 245, 0.6);
+  box-shadow: 0 10px 24px -8px rgba(71, 125, 246, 0.6);
 }
-.btn-primary:hover { box-shadow: 0 14px 30px -6px rgba(75, 110, 245, 0.7); transform: translateY(-1px); }
+.btn-primary:hover { box-shadow: 0 14px 30px -6px rgba(71, 125, 246, 0.7); transform: translateY(-1px); }
 
 .btn-outline {
   background: #fff;
@@ -159,7 +162,7 @@ button { font: inherit; cursor: pointer; }
   place-items: center;
   font-size: 18px;
   flex-shrink: 0;
-  box-shadow: 0 6px 14px -6px rgba(75, 110, 245, 0.6);
+  box-shadow: 0 6px 14px -6px rgba(71, 125, 246, 0.6);
 }
 .brand-text { min-width: 0; }
 .brand-text .title { display: block; }
@@ -244,7 +247,7 @@ button { font: inherit; cursor: pointer; }
 #map-zoom-group { transition: transform 0.35s ease; transform-origin: 50% 50%; }
 .map-dot { fill: rgba(255, 255, 255, 0.55); }
 .map-marker { cursor: pointer; }
-.map-marker .map-marker-dot { fill: var(--gold); stroke: rgba(27, 37, 89, 0.35); stroke-width: 1; transition: r 0.15s ease; }
+.map-marker .map-marker-dot { fill: var(--gold); stroke: rgba(0, 20, 45, 0.35); stroke-width: 1; transition: r 0.15s ease; }
 .map-marker .map-marker-ring { fill: none; stroke: var(--gold); stroke-width: 1.6; }
 .map-marker.is-open .map-marker-dot { fill: #fff; }
 .map-marker.is-open .map-marker-ring { stroke: #fff; }
@@ -257,7 +260,7 @@ button { font: inherit; cursor: pointer; }
 .map-label {
   position: absolute;
   transform: translate(-50%, -140%);
-  background: rgba(27, 37, 89, 0.9);
+  background: rgba(0, 20, 45, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 999px;
   padding: 5px 12px;
@@ -321,7 +324,7 @@ button { font: inherit; cursor: pointer; }
   font-weight: 700;
   display: grid;
   place-items: center;
-  box-shadow: 0 6px 14px -6px rgba(27, 37, 89, 0.4);
+  box-shadow: 0 6px 14px -6px rgba(0, 20, 45, 0.4);
   transition: transform 0.15s ease, background 0.15s ease;
 }
 .map-zoom button:hover, .map-carousel button:hover { transform: translateY(-1px); background: var(--gold-soft); }
@@ -343,7 +346,7 @@ button { font: inherit; cursor: pointer; }
   border-radius: 14px;
   padding: 10px 14px;
   min-width: 180px;
-  box-shadow: 0 10px 24px -10px rgba(27, 37, 89, 0.4);
+  box-shadow: 0 10px 24px -10px rgba(0, 20, 45, 0.4);
 }
 .map-current strong { display: block; font-family: "Baloo 2", sans-serif; font-size: 14px; color: var(--blue-dark); }
 .map-current span { font-size: 12px; color: var(--text-faint); font-weight: 700; }
@@ -575,7 +578,7 @@ section { padding-block: 88px; }
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  box-shadow: 0 4px 10px -4px rgba(27,37,89,0.4);
+  box-shadow: 0 4px 10px -4px rgba(0,20,45,0.4);
 }
 .city-card .frame .flag {
   font-size: 20px;
@@ -585,7 +588,7 @@ section { padding-block: 88px; }
   height: 32px;
   display: grid;
   place-items: center;
-  box-shadow: 0 4px 10px -4px rgba(27,37,89,0.4);
+  box-shadow: 0 4px 10px -4px rgba(0,20,45,0.4);
 }
 .city-card .frame .hero-stat { display: none; }
 .city-card .caption {
@@ -628,7 +631,7 @@ section { padding-block: 88px; }
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(27, 37, 89, 0.45);
+  background: rgba(0, 20, 45, 0.45);
   backdrop-filter: blur(4px);
   display: none;
   align-items: flex-start;
@@ -668,7 +671,7 @@ section { padding-block: 88px; }
   font-weight: 700;
   display: grid;
   place-items: center;
-  box-shadow: 0 6px 14px -6px rgba(27,37,89,0.4);
+  box-shadow: 0 6px 14px -6px rgba(0,20,45,0.4);
 }
 .modal-wrap { position: relative; }
 .conf-badge {
@@ -717,7 +720,7 @@ section { padding-block: 88px; }
   background: #fff;
   border-radius: 999px;
   margin-bottom: 28px;
-  box-shadow: 0 4px 14px -8px rgba(27,37,89,0.3);
+  box-shadow: 0 4px 14px -8px rgba(0,20,45,0.3);
 }
 .filter-tabs button {
   border: none;
@@ -743,7 +746,7 @@ section { padding-block: 88px; }
   padding: 16px 20px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 16px -10px rgba(27,37,89,0.25);
+  box-shadow: 0 4px 16px -10px rgba(0,20,45,0.25);
   transition: transform 0.15s ease;
 }
 .cal-row:hover { transform: translateY(-2px); }
@@ -770,7 +773,7 @@ section { padding-block: 88px; }
 }
 .status-open { background: var(--green-soft); color: var(--ok); }
 .status-done { background: var(--bg-elev-2); color: var(--text-faint); }
-.cal-row.is-open { box-shadow: 0 6px 20px -10px rgba(75,110,245,0.4); }
+.cal-row.is-open { box-shadow: 0 6px 20px -10px rgba(71,125,246,0.4); }
 .cal-row.is-hidden { display: none; }
 
 @media (max-width: 700px) {
@@ -935,7 +938,7 @@ section { padding-block: 88px; }
   height: 160px;
   object-fit: cover;
   border-radius: 16px;
-  box-shadow: 0 8px 20px -12px rgba(27,37,89,0.3);
+  box-shadow: 0 8px 20px -12px rgba(0,20,45,0.3);
   transition: transform 0.2s ease;
 }
 .culture-strip img:hover { transform: translateY(-3px); }
