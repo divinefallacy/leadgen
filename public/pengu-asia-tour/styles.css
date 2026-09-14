@@ -41,7 +41,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Baloo 2", "Nunito", sans-serif;
+  font-family: "Fredoka", "Nunito", sans-serif;
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.01em;
@@ -64,7 +64,7 @@ button { font: inherit; cursor: pointer; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -87,7 +87,7 @@ button { font: inherit; cursor: pointer; }
   gap: 8px;
   padding: 14px 26px;
   border-radius: 999px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 15px;
   border: 2px solid transparent;
@@ -147,22 +147,16 @@ button { font: inherit; cursor: pointer; }
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 16px;
   letter-spacing: -0.01em;
   color: var(--blue-dark);
 }
-.brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
-  background: var(--blue);
-  display: grid;
-  place-items: center;
-  font-size: 18px;
+.brand-logo {
+  height: 40px;
+  width: auto;
   flex-shrink: 0;
-  box-shadow: 0 6px 14px -6px rgba(71, 125, 246, 0.6);
 }
 .brand-text { min-width: 0; }
 .brand-text .title { display: block; }
@@ -264,7 +258,7 @@ button { font: inherit; cursor: pointer; }
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 999px;
   padding: 5px 12px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #fff;
@@ -301,7 +295,7 @@ button { font: inherit; cursor: pointer; }
   gap: 8px;
 }
 .map-poster .poster-bar div { min-width: 0; }
-.map-poster .poster-city { font-family: "Baloo 2", sans-serif; font-weight: 700; font-size: 14px; color: var(--blue-dark); }
+.map-poster .poster-city { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 14px; color: var(--blue-dark); }
 .map-poster .poster-date { font-size: 11.5px; color: var(--text-faint); margin-top: 1px; }
 .map-poster .poster-bar .arrow { color: var(--pink); font-weight: 700; flex-shrink: 0; }
 
@@ -348,7 +342,7 @@ button { font: inherit; cursor: pointer; }
   min-width: 180px;
   box-shadow: 0 10px 24px -10px rgba(0, 20, 45, 0.4);
 }
-.map-current strong { display: block; font-family: "Baloo 2", sans-serif; font-size: 14px; color: var(--blue-dark); }
+.map-current strong { display: block; font-family: "Fredoka", sans-serif; font-size: 14px; color: var(--blue-dark); }
 .map-current span { font-size: 12px; color: var(--text-faint); font-weight: 700; }
 .map-current .arrow { color: var(--pink); font-weight: 700; margin-left: auto; }
 .map-carousel { display: flex; gap: 8px; }
@@ -388,7 +382,7 @@ button { font: inherit; cursor: pointer; }
 .countdown-banner > * { position: relative; }
 .countdown-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .countdown-wordmark {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 20px;
   letter-spacing: -0.01em;
@@ -410,7 +404,7 @@ button { font: inherit; cursor: pointer; }
   text-align: center;
 }
 .countdown-timer .val {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 20px;
   line-height: 1;
@@ -425,7 +419,7 @@ button { font: inherit; cursor: pointer; }
   margin-top: 3px;
 }
 .countdown-cta {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 14px;
   font-weight: 700;
   background: var(--blue-dark);
@@ -441,7 +435,7 @@ button { font: inherit; cursor: pointer; }
 
 /* ---------- Editorial numbers panel ---------- */
 .numbers-stack {
-  background: var(--blue);
+  background: var(--blue-dark);
   border-radius: var(--radius);
   padding: 40px 36px;
   display: grid;
@@ -463,7 +457,7 @@ button { font: inherit; cursor: pointer; }
 }
 .numbers-row .val {
   order: 1;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: clamp(1.8rem, 3.2vw, 2.4rem);
   color: #fff;
@@ -492,7 +486,7 @@ button { font: inherit; cursor: pointer; }
   animation: ticker 28s linear infinite;
 }
 .ticker-track .item {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: var(--text-dim);
@@ -574,7 +568,7 @@ section { padding-block: 88px; }
   border-radius: 999px;
   background: var(--gold);
   color: var(--blue-dark);
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -616,7 +610,7 @@ section { padding-block: 88px; }
   padding-right: 44px;
 }
 .city-card .caption .stat-hint .n {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 20px;
   color: var(--blue);
@@ -680,7 +674,7 @@ section { padding-block: 88px; }
   border-radius: 999px;
   background: var(--gold);
   color: var(--blue-dark);
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -701,7 +695,7 @@ section { padding-block: 88px; }
   padding: 12px 14px;
 }
 .modal .stat-list .n {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   color: var(--blue);
   font-size: 19px;
@@ -728,7 +722,7 @@ section { padding-block: 88px; }
   color: var(--text-dim);
   padding: 10px 18px;
   border-radius: 999px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 13.5px;
   font-weight: 700;
 }
@@ -751,18 +745,18 @@ section { padding-block: 88px; }
 }
 .cal-row:hover { transform: translateY(-2px); }
 .cal-row .month {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 13px;
   color: var(--pink);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.cal-row .info .conf { font-weight: 700; font-size: 15.5px; color: var(--blue-dark); font-family: "Baloo 2", sans-serif; }
+.cal-row .info .conf { font-weight: 700; font-size: 15.5px; color: var(--blue-dark); font-family: "Fredoka", sans-serif; }
 .cal-row .info .loc { font-size: 12.5px; color: var(--text-faint); font-weight: 700; margin-top: 2px; }
 .cal-row .dates { font-size: 12.5px; color: var(--text-dim); font-weight: 700; white-space: nowrap; }
 .cal-row .status {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 11px;
   font-weight: 700;
   padding: 6px 12px;
@@ -893,7 +887,7 @@ section { padding-block: 88px; }
   gap: 30px;
   align-items: center;
   padding: 56px 44px;
-  background: var(--blue);
+  background: var(--blue-dark);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -966,7 +960,7 @@ section { padding-block: 88px; }
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-size: 15.5px;
   font-weight: 700;
 }
@@ -987,7 +981,7 @@ section { padding-block: 88px; }
 
 /* ---------- Footer ---------- */
 footer {
-  background: var(--blue);
+  background: var(--blue-dark);
   color: #fff;
   padding-block: 56px 28px;
   position: relative;
@@ -1014,12 +1008,12 @@ footer {
 }
 .footer-signup input:focus { outline: 2px solid var(--gold); }
 .footer-signup button {
-  background: var(--blue-dark);
+  background: var(--blue);
   color: #fff;
   border: none;
   border-radius: 999px;
   padding: 13px 24px;
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 14px;
 }
@@ -1029,7 +1023,7 @@ footer {
   gap: 24px;
 }
 .footer-cols .col-title {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Fredoka", sans-serif;
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.06em;
