@@ -194,13 +194,15 @@
       <p>Fourteen conferences across eleven markets. Our final open windows for exclusive integration are marked below — secure your presence alongside Pudgy Penguins before they close.</p>
     </div>
 
-    <div class="filter-tabs" id="cal-filters">
-      <button class="active" data-filter="all">All Events</button>
-      <button data-filter="open">Open for Partnership</button>
-      <button data-filter="done">Completed 2026</button>
-    </div>
+    <div class="cal-widget reveal">
+      <div class="filter-tabs" id="cal-filters">
+        <button class="active" data-filter="all">All Events</button>
+        <button data-filter="open">Open for Partnership</button>
+        <button data-filter="done">Completed 2026</button>
+      </div>
 
-    <div class="cal-list" id="cal-list"></div>
+      <div class="cal-list" id="cal-list"></div>
+    </div>
   </div>
 </section>
 
@@ -211,35 +213,36 @@
       <p>Every activation is modular — stack tiers or go all-in on a single city takeover.</p>
     </div>
 
-    <div class="tier-grid">
-      <div class="tier-card reveal">
-        <div class="icon">🏙️</div>
-        <span class="tag">City-Wide Takeover</span>
-        <h3>Main Event</h3>
-        <p>Transform skylines into your canvas — synchronized LED towers, wrapped transit fleets and exclusive K-pop concert integrations that dominate the timeline.</p>
-        <a href="#apply" class="btn btn-outline btn-sm btn-block js-tier" data-tier="Main Event">Apply for this tier</a>
+    <div class="tiers-layout reveal">
+      <div class="tiers-image">
+        <img src="assets/kl-pengu-tower.jpg" alt="Pengu Tower OOH takeover, Kuala Lumpur" loading="lazy" />
       </div>
-      <div class="tier-card reveal">
-        <div class="icon">🥂</div>
-        <span class="tag">Elite Executive Access</span>
-        <h3>VIP &amp; Institutional</h3>
-        <p>Curate high-touch engagements with the region's most influential decision-makers — title-sponsored Michelin dining and closed-door penthouse mixers.</p>
-        <a href="#apply" class="btn btn-outline btn-sm btn-block js-tier" data-tier="VIP & Institutional">Apply for this tier</a>
+      <div class="tiers-quadrants">
+        <button type="button" class="tier-quad active" data-tier="Main Event">
+          <div class="icon">🏙️</div>
+          <h4>Main Event</h4>
+          <p>City-wide takeover — LED towers, transit wraps, concert integrations.</p>
+        </button>
+        <button type="button" class="tier-quad" data-tier="VIP & Institutional">
+          <div class="icon">🥂</div>
+          <h4>VIP &amp; Institutional</h4>
+          <p>Elite executive access — Michelin dining, penthouse mixers.</p>
+        </button>
+        <button type="button" class="tier-quad" data-tier="KOL & Creator">
+          <div class="icon">🎤</div>
+          <h4>KOL &amp; Creator</h4>
+          <p>Digital &amp; artist amplification with our tier-1 creator network.</p>
+        </button>
+        <button type="button" class="tier-quad" data-tier="Community">
+          <div class="icon">🐧</div>
+          <h4>Community</h4>
+          <p>Grassroots loyalty &amp; trust — local runs, raves, tournaments.</p>
+        </button>
       </div>
-      <div class="tier-card reveal">
-        <div class="icon">🎤</div>
-        <span class="tag">Digital &amp; Artist Amplification</span>
-        <h3>KOL &amp; Creator</h3>
-        <p>Spark global virality with our tier-1 network of artists, organic celebrity integrations and private creator hubs for unprecedented digital resonance.</p>
-        <a href="#apply" class="btn btn-outline btn-sm btn-block js-tier" data-tier="KOL & Creator">Apply for this tier</a>
-      </div>
-      <div class="tier-card reveal">
-        <div class="icon">🐧</div>
-        <span class="tag">Grassroots Loyalty &amp; Trust</span>
-        <h3>Community</h3>
-        <p>Integrate into the pulse of local culture with high-energy bespoke activations — from community runs to Kopitiam raves to pickleball tournaments.</p>
-        <a href="#apply" class="btn btn-outline btn-sm btn-block js-tier" data-tier="Community">Apply for this tier</a>
-      </div>
+    </div>
+
+    <div class="tiers-cta reveal">
+      <a href="#apply" class="btn btn-primary js-tier" id="tier-cta" data-tier="Main Event">Apply for This Tier</a>
     </div>
   </div>
 </section>

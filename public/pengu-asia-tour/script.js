@@ -303,7 +303,7 @@ const io = new IntersectionObserver(
   { threshold: 0.12 }
 );
 revealEls.forEach((el) => io.observe(el));
-document.querySelectorAll(".city-card, .tier-card").forEach((el) => {
+document.querySelectorAll(".city-card").forEach((el) => {
   el.classList.add("reveal");
   io.observe(el);
 });
@@ -322,6 +322,16 @@ document.addEventListener("click", (e) => {
     const opt = [...eventSelect.options].find((o) => o.textContent.includes(link.dataset.city));
     if (opt) eventSelect.value = opt.value;
   }
+});
+
+// ---------- Tier quadrant selection ----------
+const tierCta = document.getElementById("tier-cta");
+document.querySelectorAll(".tier-quad").forEach((quad) => {
+  quad.addEventListener("click", () => {
+    document.querySelectorAll(".tier-quad").forEach((q) => q.classList.remove("active"));
+    quad.classList.add("active");
+    if (tierCta) tierCta.dataset.tier = quad.dataset.tier;
+  });
 });
 
 document.querySelectorAll(".js-book-2027").forEach((btn) => {
