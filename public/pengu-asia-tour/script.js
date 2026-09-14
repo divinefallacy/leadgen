@@ -10,6 +10,7 @@ const CITIES = [
     photo2: "assets/tokyo-abcmart.jpg",
     summary:
       "Bridging Web3 and mainstream culture during WebX with a 9-screen Shibuya billboard takeover, co-hosted with MEXC and headlined by Apple CM alumni PeterParker69.",
+    stat: { n: "3.5M+", d: "OOH daily impressions, Shibuya takeover" },
     stats: [
       { n: "600+", d: "Event signups" },
       { n: "3.5M+", d: "OOH daily impressions" },
@@ -27,6 +28,7 @@ const CITIES = [
     photo2: "assets/hcm-group.jpg",
     summary:
       "High-impact brand activations and exclusive networking at Conviction 2025, capped by a co-branded Coin98 Boba activation on the main conference floor.",
+    stat: { n: "20,000+", d: "Digital attendees, 30+ artists live" },
     stats: [
       { n: "323", d: "VIP signups, rooftop mixer" },
       { n: "20,000+", d: "Digital attendees, 30+ artists live" },
@@ -44,6 +46,7 @@ const CITIES = [
     photo2: "assets/kl-jup-tower.jpg",
     summary:
       "City-wide takeovers and tier-1 institutional networking during Malaysia Blockchain Week, anchored by a Michelin VIP dinner with founders, bank CEOs and the Malaysia SC.",
+    stat: { n: "3.5M+", d: "OOH impressions, 7-day TSLAW Tower takeover" },
     stats: [
       { n: "1,350+", d: "Event signups" },
       { n: "50+", d: "CEOs & founders at Michelin dinner" },
@@ -61,6 +64,7 @@ const CITIES = [
     photo2: "assets/bali-villa.jpg",
     summary:
       "Premier satellite activations and exclusive networking during Coinfest Asia — a flagship pool party at the world's largest beach club, co-hosted with MEXC and Triv.",
+    stat: { n: "1,985+", d: "Total signups across 4 satellite events" },
     stats: [
       { n: "1,985+", d: "Total signups across 4 satellite events" },
       { n: "500+", d: "Pax villa takeover" },
@@ -78,6 +82,7 @@ const CITIES = [
     photo2: "assets/seoul-street.jpg",
     summary:
       "Premier brand takeovers and cultural activations during Korea Blockchain Week, headlined by a Pengu Winter Wonderland and an exclusive K-pop concert with tripleS.",
+    stat: { n: "6M+", d: "K-pop fanbase reach via tripleS" },
     stats: [
       { n: "5,000+", d: "Event signups" },
       { n: "6M+", d: "K-pop fanbase reach via tripleS" },
@@ -95,6 +100,7 @@ const CITIES = [
     photo2: "assets/singapore-missuniverse.jpg",
     summary:
       "Unprecedented visibility during Token2049 and F1 race week — a Williams Racing rear-wing takeover, Amber Lounge with Saweetie, and the Token of Love Festival with HyunA.",
+    stat: { n: "2.5M+", d: "Social impressions, viral celebrity shares" },
     stats: [
       { n: "8,500+", d: "Total signups" },
       { n: "2.5M+", d: "Social impressions, viral celebrity shares" },
@@ -105,44 +111,58 @@ const CITIES = [
 ];
 
 // ---------- Data: full 2026 event calendar ----------
-// "today" for open/completed status — the tour's live cutoff
-const TODAY = new Date("2026-09-14");
+// live clock — events flip from "open" to "completed" automatically as real time passes
+const TODAY = new Date();
 
 const CALENDAR = [
-  { month: "Jan", conf: "Black Mountain", loc: "Chiang Mai, Thailand", dates: "Jan 22", end: "2026-01-22" },
-  { month: "Jan", conf: "Jupiter Summit KL", loc: "Kuala Lumpur, Malaysia", dates: "Jan 31 – Feb 2", end: "2026-02-02" },
-  { month: "Feb", conf: "Consensus Hong Kong", loc: "Hong Kong", dates: "Feb 10 – 12", end: "2026-02-12" },
-  { month: "Apr", conf: "Web3 Festival", loc: "Hong Kong", dates: "Apr 20 – 23", end: "2026-04-23" },
-  { month: "Apr", conf: "Token2049", loc: "Dubai, UAE", dates: "Apr 29 – 30", end: "2026-04-30" },
-  { month: "May", conf: "SEABW", loc: "Bangkok, Thailand", dates: "May 19 – 21", end: "2026-05-21" },
-  { month: "Jul", conf: "WebX", loc: "Tokyo, Japan", dates: "Jul 13 – 14", end: "2026-07-14" },
-  { month: "Jul", conf: "MYBW", loc: "Kuala Lumpur, Malaysia", dates: "Jul 29 – 30", end: "2026-07-30" },
-  { month: "Aug", conf: "Conviction", loc: "Ho Chi Minh, Vietnam", dates: "Aug 14 – 16", end: "2026-08-16" },
-  { month: "Aug", conf: "Coinfest Asia", loc: "Bali, Indonesia", dates: "Aug 20 – 21", end: "2026-08-21" },
-  { month: "Sep", conf: "KBW", loc: "Seoul, South Korea", dates: "Sep 29 – Oct 1", end: "2026-10-01" },
-  { month: "Oct", conf: "Token2049", loc: "Singapore", dates: "Oct 7 – 8", end: "2026-10-08" },
-  { month: "Nov", conf: "TBW", loc: "Taipei, Taiwan", dates: "November", end: "2026-11-30" },
-  { month: "Nov", conf: "Devcon 8", loc: "Mumbai, India", dates: "Nov 3 – 6", end: "2026-11-06" },
-].map((e) => ({ ...e, open: new Date(e.end) >= TODAY }));
+  { month: "Jan", conf: "Black Mountain", loc: "Chiang Mai, Thailand", dates: "Jan 22", start: "2026-01-22", end: "2026-01-22" },
+  { month: "Jan", conf: "Jupiter Summit KL", loc: "Kuala Lumpur, Malaysia", dates: "Jan 31 – Feb 2", start: "2026-01-31", end: "2026-02-02" },
+  { month: "Feb", conf: "Consensus Hong Kong", loc: "Hong Kong", dates: "Feb 10 – 12", start: "2026-02-10", end: "2026-02-12" },
+  { month: "Apr", conf: "Web3 Festival", loc: "Hong Kong", dates: "Apr 20 – 23", start: "2026-04-20", end: "2026-04-23" },
+  { month: "Apr", conf: "Token2049", loc: "Dubai, UAE", dates: "Apr 29 – 30", start: "2026-04-29", end: "2026-04-30" },
+  { month: "May", conf: "SEABW", loc: "Bangkok, Thailand", dates: "May 19 – 21", start: "2026-05-19", end: "2026-05-21" },
+  { month: "Jul", conf: "WebX", loc: "Tokyo, Japan", dates: "Jul 13 – 14", start: "2026-07-13", end: "2026-07-14" },
+  { month: "Jul", conf: "MYBW", loc: "Kuala Lumpur, Malaysia", dates: "Jul 29 – 30", start: "2026-07-29", end: "2026-07-30" },
+  { month: "Aug", conf: "Conviction", loc: "Ho Chi Minh, Vietnam", dates: "Aug 14 – 16", start: "2026-08-14", end: "2026-08-16" },
+  { month: "Aug", conf: "Coinfest Asia", loc: "Bali, Indonesia", dates: "Aug 20 – 21", start: "2026-08-20", end: "2026-08-21" },
+  { month: "Sep", conf: "KBW", loc: "Seoul, South Korea", dates: "Sep 29 – Oct 1", start: "2026-09-29", end: "2026-10-01" },
+  { month: "Oct", conf: "Token2049", loc: "Singapore", dates: "Oct 7 – 8", start: "2026-10-07", end: "2026-10-08" },
+  { month: "Nov", conf: "TBW", loc: "Taipei, Taiwan", dates: "November", start: "2026-11-01", end: "2026-11-30" },
+  { month: "Nov", conf: "Devcon 8", loc: "Mumbai, India", dates: "Nov 3 – 6", start: "2026-11-03", end: "2026-11-06" },
+].map((e) => ({ ...e, open: new Date(`${e.end}T23:59:59`) >= TODAY }));
+
+// ---------- Partner ticker ----------
+const PARTNERS = ["MEXC", "Coin98", "Jupiter", "Triv", "Williams Racing", "Amber Lounge", "Malaysia SC", "Mandarin Oriental"];
+function tickerGroup() {
+  return (
+    `<span class="item label">2025 Collaborators</span>` +
+    PARTNERS.map((p) => `<span class="dot">·</span><span class="item">${p}</span>`).join("")
+  );
+}
+document.getElementById("ticker-track").innerHTML = tickerGroup() + tickerGroup();
 
 // ---------- Render city cards ----------
 const cityGrid = document.getElementById("city-grid");
 cityGrid.innerHTML = CITIES.map(
   (c) => `
   <article class="city-card reveal" data-id="${c.id}">
-    <img class="photo" src="${c.photo}" alt="${c.city}, ${c.country} — ${c.conference}" loading="lazy" />
-    <div class="body">
-      <div class="flag">${c.flag}</div>
-      <h3>${c.city}</h3>
-      <div class="country">${c.country}</div>
-      <span class="conf-badge">${c.conference}</span>
-      <div class="mini-stats">
-        ${c.stats
-          .slice(0, 2)
-          .map((s) => `<div><div class="n">${s.n}</div><div class="l">${s.d}</div></div>`)
-          .join("")}
+    <div class="frame">
+      <img src="${c.photo}" alt="${c.city}, ${c.country} — ${c.conference}" loading="lazy" />
+      <div class="tag-row">
+        <span class="conf-badge">${c.conference}</span>
+        <span class="flag">${c.flag}</span>
       </div>
-      <div class="expand-hint">View full case study →</div>
+      <div class="hero-stat">
+        <div class="n">${c.stat.n}</div>
+        <div class="d">${c.stat.d}</div>
+      </div>
+    </div>
+    <div class="caption">
+      <div>
+        <h3>${c.city}</h3>
+        <div class="country">${c.country}</div>
+      </div>
+      <span class="arrow">Case study →</span>
     </div>
   </article>`
 ).join("");
@@ -272,6 +292,55 @@ document.querySelectorAll(".js-book-2027").forEach((btn) => {
     const eventSelect = document.getElementById("f-event");
     const opt = [...eventSelect.options].find((o) => o.textContent.includes("2027"));
     if (opt) eventSelect.value = opt.value;
+  });
+});
+
+// ---------- Countdown banner: live countdown to the next open event ----------
+function updateCountdown() {
+  const now = new Date();
+  const upcoming = [...CALENDAR]
+    .map((e) => ({ ...e, startDate: new Date(`${e.start}T00:00:00`), endDate: new Date(`${e.end}T23:59:59`) }))
+    .filter((e) => e.endDate >= now)
+    .sort((a, b) => a.startDate - b.startDate);
+
+  const nameEl = document.getElementById("cd-name");
+  const eyebrowEl = document.getElementById("cd-eyebrow");
+  const timerEl = document.getElementById("cd-timer");
+  if (!nameEl || upcoming.length === 0) {
+    if (nameEl) nameEl.textContent = "2026 tour complete — 2027 booking is open";
+    if (timerEl) timerEl.style.display = "none";
+    return;
+  }
+
+  const next = upcoming[0];
+  nameEl.textContent = `${next.conf} — ${next.loc}`;
+
+  const isLive = next.startDate <= now && now <= next.endDate;
+  if (isLive) {
+    eyebrowEl.textContent = "Happening now";
+    timerEl.style.display = "none";
+    return;
+  }
+
+  eyebrowEl.textContent = "Next up";
+  timerEl.style.display = "flex";
+  const diff = Math.max(0, next.startDate - now);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById("cd-d").textContent = d;
+  document.getElementById("cd-h").textContent = String(h).padStart(2, "0");
+  document.getElementById("cd-m").textContent = String(m).padStart(2, "0");
+  document.getElementById("cd-s").textContent = String(s).padStart(2, "0");
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ---------- FAQ accordion ----------
+document.querySelectorAll(".faq-q").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.closest(".faq-item").classList.toggle("open");
   });
 });
 
