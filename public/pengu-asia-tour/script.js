@@ -211,11 +211,46 @@ document.getElementById("modal-close").addEventListener("click", closeModal);
 backdrop.addEventListener("click", (e) => {
   if (e.target === backdrop) closeModal();
 });
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModal();
-});
 modalContent.addEventListener("click", (e) => {
   if (e.target.closest("a")) closeModal();
+});
+
+// ---------- Gallery lightbox ----------
+const galleryGrid = document.getElementById("gallery-grid");
+const lightboxBackdrop = document.getElementById("lightbox-backdrop");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxCaption = document.getElementById("lightbox-caption");
+
+function openLightbox(item) {
+  const img = item.querySelector("img");
+  lightboxImg.src = img.src;
+  lightboxImg.alt = img.alt;
+  lightboxCaption.textContent = item.dataset.caption || "";
+  lightboxBackdrop.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightboxBackdrop.classList.remove("is-open");
+  document.body.style.overflow = "";
+}
+
+if (galleryGrid) {
+  galleryGrid.addEventListener("click", (e) => {
+    const item = e.target.closest(".gallery-item");
+    if (item) openLightbox(item);
+  });
+}
+document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+lightboxBackdrop.addEventListener("click", (e) => {
+  if (e.target === lightboxBackdrop) closeLightbox();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeModal();
+    closeLightbox();
+  }
 });
 
 // ---------- Render calendar ----------
