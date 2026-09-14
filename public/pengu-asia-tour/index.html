@@ -54,6 +54,28 @@
   </div>
 </header>
 
+<section id="map-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Live Across Asia</span>
+      <h2>One tour, eight stops, zero downtime.</h2>
+      <p>Hover a city for its 2025 headline result. Click a flagship stop for the full case study, or an upcoming stop to jump to its 2026 date.</p>
+    </div>
+    <div class="map-wrap reveal">
+      <svg class="map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <path class="map-land"></path>
+        <path class="map-route"></path>
+        <g id="map-markers"></g>
+      </svg>
+      <div class="map-tooltip" id="map-tooltip"></div>
+    </div>
+    <div class="map-legend">
+      <span><i class="dot flagship"></i> 2025 flagship — full case study</span>
+      <span><i class="dot open"></i> 2026 route — open for partnership</span>
+    </div>
+  </div>
+</section>
+
 <div class="wrap countdown-wrap">
   <div class="countdown-banner reveal" id="countdown-banner">
     <div class="countdown-left">
@@ -337,6 +359,7 @@
   </div>
 </div>
 
+<script src="map-data.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

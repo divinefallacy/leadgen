@@ -325,6 +325,75 @@ button { font: inherit; cursor: pointer; }
   .stat-strip .stat:nth-child(2) { border-right: none; }
 }
 
+/* ---------- Interactive world map ---------- */
+.map-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 35%, rgba(94, 203, 255, 0.08), transparent 70%),
+    var(--bg-elev);
+}
+.map-svg { width: 100%; height: 100%; display: block; }
+.map-land {
+  fill: rgba(94, 203, 255, 0.16);
+  stroke: rgba(94, 203, 255, 0.4);
+  stroke-width: 0.6;
+}
+.map-route {
+  fill: none;
+  stroke: var(--coral);
+  stroke-width: 1.3;
+  stroke-dasharray: 5 5;
+  opacity: 0.55;
+  animation: dash 1.4s linear infinite;
+}
+@keyframes dash { to { stroke-dashoffset: -20; } }
+.map-marker { cursor: pointer; }
+.map-marker .map-marker-dot { fill: var(--coral); stroke: #140505; stroke-width: 1; }
+.map-marker .map-marker-ring { fill: none; stroke: var(--coral); stroke-width: 1.4; }
+.map-marker.is-open .map-marker-dot { fill: var(--ice); stroke: #041018; }
+.map-marker.is-open .map-marker-ring { stroke: var(--ice); }
+.map-marker:hover .map-marker-dot { r: 6; }
+.map-tooltip {
+  position: absolute;
+  transform: translate(-50%, -125%);
+  background: rgba(6, 11, 20, 0.95);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 12.5px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 5;
+  box-shadow: var(--shadow);
+}
+.map-tooltip.show { opacity: 1; }
+.map-tooltip strong {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  margin-bottom: 2px;
+}
+.map-tooltip span { color: var(--text-dim); }
+.map-legend {
+  margin-top: 16px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+.map-legend span { display: flex; align-items: center; gap: 8px; }
+.map-legend .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.map-legend .dot.flagship { background: var(--coral); }
+.map-legend .dot.open { background: var(--ice); }
+
 /* ---------- Countdown banner ---------- */
 .countdown-wrap { padding-block: 0 0; }
 .countdown-banner {

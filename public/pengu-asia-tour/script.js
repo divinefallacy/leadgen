@@ -295,6 +295,77 @@ document.querySelectorAll(".js-book-2027").forEach((btn) => {
   });
 });
 
+// ---------- Interactive world map ----------
+const MAP_CITY_META = {
+  tokyo: { hasCaseStudy: true },
+  "ho-chi-minh": { hasCaseStudy: true },
+  "kuala-lumpur": { hasCaseStudy: true },
+  bali: { hasCaseStudy: true },
+  seoul: { hasCaseStudy: true },
+  singapore: { hasCaseStudy: true },
+  taipei: { hasCaseStudy: false, conf: "TBW" },
+  mumbai: { hasCaseStudy: false, conf: "Devcon 8" },
+};
+
+const TOUR_ROUTE_ORDER = ["tokyo", "kuala-lumpur", "ho-chi-minh", "bali", "seoul", "singapore", "taipei", "mumbai"];
+
+function initMap() {
+  const svg = document.querySelector(".map-svg");
+  if (!svg || typeof WORLD_MAP_PATH === "undefined") return;
+
+  svg.querySelector(".map-land").setAttribute("d", WORLD_MAP_PATH);
+
+  const routePoints = TOUR_ROUTE_ORDER.map((id) => MAP_POINTS.find((p) => p.id === id)).filter(Boolean);
+  const routeD = "M " + routePoints.map((p) => `${p.x},${p.y}`).join(" L ");
+  svg.querySelector(".map-route").setAttribute("d", routeD);
+
+  const markersGroup = document.getElementById("map-markers");
+  const tooltip = document.getElementById("map-tooltip");
+  const svgNS = "http://www.w3.org/2000/svg";
+
+  function positionTooltip(p) {
+    tooltip.style.left = (p.x / 1000) * 100 + "%";
+    tooltip.style.top = (p.y / 500) * 100 + "%";
+  }
+
+  MAP_POINTS.forEach((p) => {
+    const meta = MAP_CITY_META[p.id] || {};
+    const city = CITIES.find((c) => c.id === p.id);
+
+    const g = document.createElementNS(svgNS, "g");
+    g.setAttribute("class", `map-marker ${meta.hasCaseStudy ? "is-flagship" : "is-open"}`);
+    g.setAttribute("data-id", p.id);
+    g.innerHTML = `
+      <circle cx="${p.x}" cy="${p.y}" r="6" class="map-marker-ring">
+        <animate attributeName="r" values="6;15;6" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.65;0;0.65" dur="2.4s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="${p.x}" cy="${p.y}" r="4.5" class="map-marker-dot"></circle>
+    `;
+    markersGroup.appendChild(g);
+
+    g.addEventListener("mouseenter", () => {
+      if (city) {
+        tooltip.innerHTML = `<strong>${city.flag} ${city.city}</strong><span>${city.stat.n} ${city.stat.d}</span>`;
+      } else {
+        tooltip.innerHTML = `<strong>${p.name}</strong><span>${meta.conf} — open for partnership</span>`;
+      }
+      positionTooltip(p);
+      tooltip.classList.add("show");
+    });
+    g.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
+    g.addEventListener("click", () => {
+      if (meta.hasCaseStudy) {
+        document.getElementById("tour-2025").scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => openModal(p.id), 450);
+      } else {
+        document.getElementById("calendar").scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  });
+}
+initMap();
+
 // ---------- Countdown banner: live countdown to the next open event ----------
 function updateCountdown() {
   const now = new Date();
