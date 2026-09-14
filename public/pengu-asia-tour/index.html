@@ -7,7 +7,7 @@
 <meta name="description" content="Year of the Penguin: Asia Tour 2026. Pudgy Penguins' flagship Web3 event tour across Tokyo, Kuala Lumpur, Ho Chi Minh, Bali, Seoul &amp; Singapore. Apply for a 2026 partnership or book your 2027 slot." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -340,13 +340,51 @@
 </section>
 
 <footer>
-  <div class="wrap footer-inner">
-    <span>© 2026 Pudgy Penguins · Pengu Asia Tour</span>
-    <div class="footer-links">
-      <a href="#tour-2025">2025 Tour</a>
-      <a href="#calendar">Calendar</a>
-      <a href="#tiers">Tiers</a>
-      <a href="#apply">Apply</a>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <span class="eyebrow" style="color:#fff;">Stay In The Loop</span>
+        <h2 style="margin-top:10px;">Early access to every 2026 &amp; 2027 city announcement.</h2>
+      </div>
+      <form class="footer-signup" onsubmit="event.preventDefault(); this.reset(); this.querySelector('button').textContent='Subscribed!';">
+        <input type="email" required placeholder="Enter your email" aria-label="Email address" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+
+    <div class="footer-cols">
+      <div>
+        <div class="col-title">Tour</div>
+        <a href="#tour-2025">2025 Case Studies</a>
+        <a href="#calendar">2026 Calendar</a>
+        <a href="#map-section">Route Map</a>
+      </div>
+      <div>
+        <div class="col-title">Partner</div>
+        <a href="#tiers">Partnership Tiers</a>
+        <a href="#apply">Apply Now</a>
+        <a href="#cta-2027">2027 Booking</a>
+      </div>
+      <div>
+        <div class="col-title">Pudgy Penguins</div>
+        <a href="https://www.pudgypenguins.io" target="_blank" rel="noopener">Shop</a>
+        <a href="https://www.pudgypenguins.io" target="_blank" rel="noopener">Our Story</a>
+      </div>
+    </div>
+
+    <div class="footer-mascots">
+      <img src="assets/pengu-solo-mascot.jpg" alt="" aria-hidden="true" />
+      <img src="assets/pengu-duo-mascot.jpg" alt="Pudgy Penguins mascots" />
+    </div>
+
+    <div class="footer-inner">
+      <span>© 2026 Pudgy Penguins · Pengu Asia Tour</span>
+      <div class="footer-links">
+        <a href="#tour-2025">2025 Tour</a>
+        <a href="#calendar">Calendar</a>
+        <a href="#tiers">Tiers</a>
+        <a href="#apply">Apply</a>
+      </div>
     </div>
   </div>
 </footer>

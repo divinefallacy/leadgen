@@ -158,11 +158,13 @@ cityGrid.innerHTML = CITIES.map(
       </div>
     </div>
     <div class="caption">
-      <div>
-        <h3>${c.city}</h3>
-        <div class="country">${c.country}</div>
+      <h3>${c.city}</h3>
+      <div class="country">${c.country}</div>
+      <div class="stat-hint">
+        <div class="n">${c.stat.n}</div>
+        <div class="d">${c.stat.d}</div>
       </div>
-      <span class="arrow">Case study →</span>
+      <span class="arrow">→</span>
     </div>
   </article>`
 ).join("");
