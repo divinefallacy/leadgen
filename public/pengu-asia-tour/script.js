@@ -297,40 +297,47 @@ document.querySelectorAll(".js-book-2027").forEach((btn) => {
 
 // ---------- Interactive world map ----------
 const MAP_CITY_META = {
-  tokyo: { hasCaseStudy: true },
-  "ho-chi-minh": { hasCaseStudy: true },
-  "kuala-lumpur": { hasCaseStudy: true },
-  bali: { hasCaseStudy: true },
-  seoul: { hasCaseStudy: true },
-  singapore: { hasCaseStudy: true },
-  taipei: { hasCaseStudy: false, conf: "TBW" },
-  mumbai: { hasCaseStudy: false, conf: "Devcon 8" },
+  tokyo: { hasCaseStudy: true, conf: "WebX 2025", calConf: "WebX" },
+  "ho-chi-minh": { hasCaseStudy: true, conf: "Conviction 2025", calConf: "Conviction" },
+  "kuala-lumpur": { hasCaseStudy: true, conf: "Malaysia Blockchain Week", calConf: "MYBW" },
+  bali: { hasCaseStudy: true, conf: "Coinfest Asia", calConf: "Coinfest Asia" },
+  seoul: { hasCaseStudy: true, conf: "Korea Blockchain Week", calConf: "KBW" },
+  singapore: { hasCaseStudy: true, conf: "Token2049 & F1 Race Week", calConf: "Token2049", calLoc: "Singapore" },
+  taipei: { hasCaseStudy: false, conf: "Taiwan Blockchain Week", calConf: "TBW" },
+  mumbai: { hasCaseStudy: false, conf: "Devcon 8", calConf: "Devcon 8" },
 };
 
 const TOUR_ROUTE_ORDER = ["tokyo", "kuala-lumpur", "ho-chi-minh", "bali", "seoul", "singapore", "taipei", "mumbai"];
 
 function initMap() {
-  const svg = document.querySelector(".map-svg");
-  if (!svg || typeof WORLD_MAP_PATH === "undefined") return;
+  const svg = document.getElementById("map-svg");
+  if (!svg || typeof MAP_DOTS === "undefined") return;
 
-  svg.querySelector(".map-land").setAttribute("d", WORLD_MAP_PATH);
-
-  const routePoints = TOUR_ROUTE_ORDER.map((id) => MAP_POINTS.find((p) => p.id === id)).filter(Boolean);
-  const routeD = "M " + routePoints.map((p) => `${p.x},${p.y}`).join(" L ");
-  svg.querySelector(".map-route").setAttribute("d", routeD);
-
+  const dotsGroup = document.getElementById("map-dots");
   const markersGroup = document.getElementById("map-markers");
-  const tooltip = document.getElementById("map-tooltip");
+  const banner = document.querySelector(".map-banner");
   const svgNS = "http://www.w3.org/2000/svg";
 
-  function positionTooltip(p) {
-    tooltip.style.left = (p.x / 1000) * 100 + "%";
-    tooltip.style.top = (p.y / 500) * 100 + "%";
-  }
+  // dots: batched into one path for a single DOM node instead of ~3,500 circles
+  const r = 1.5;
+  let dotsPath = "";
+  MAP_DOTS.forEach(([x, y]) => {
+    dotsPath += `M${x - r},${y}a${r},${r} 0 1,0 ${r * 2},0a${r},${r} 0 1,0 ${-r * 2},0`;
+  });
+  const dotsEl = document.createElementNS(svgNS, "path");
+  dotsEl.setAttribute("class", "map-dot");
+  dotsEl.setAttribute("d", dotsPath);
+  dotsGroup.appendChild(dotsEl);
+
+  const labelLayer = document.createElement("div");
+  labelLayer.className = "map-label-layer";
+  banner.appendChild(labelLayer);
+
+  const markerEls = {};
+  const labelEls = {};
 
   MAP_POINTS.forEach((p) => {
     const meta = MAP_CITY_META[p.id] || {};
-    const city = CITIES.find((c) => c.id === p.id);
 
     const g = document.createElementNS(svgNS, "g");
     g.setAttribute("class", `map-marker ${meta.hasCaseStudy ? "is-flagship" : "is-open"}`);
@@ -343,26 +350,120 @@ function initMap() {
       <circle cx="${p.x}" cy="${p.y}" r="4.5" class="map-marker-dot"></circle>
     `;
     markersGroup.appendChild(g);
+    markerEls[p.id] = g;
 
-    g.addEventListener("mouseenter", () => {
-      if (city) {
-        tooltip.innerHTML = `<strong>${city.flag} ${city.city}</strong><span>${city.stat.n} ${city.stat.d}</span>`;
-      } else {
-        tooltip.innerHTML = `<strong>${p.name}</strong><span>${meta.conf} — open for partnership</span>`;
-      }
-      positionTooltip(p);
-      tooltip.classList.add("show");
+    const label = document.createElement("div");
+    label.className = "map-label";
+    label.textContent = p.name;
+    label.style.left = (p.x / MAP_WIDTH) * 100 + "%";
+    label.style.top = (p.y / MAP_HEIGHT) * 100 + "%";
+    labelLayer.appendChild(label);
+    labelEls[p.id] = label;
+
+    g.addEventListener("click", () => goTo(p.id, true));
+  });
+
+  const poster = document.getElementById("map-poster");
+  const currentCity = document.getElementById("map-current-city");
+  const currentMeta = document.getElementById("map-current-meta");
+  const currentLink = document.getElementById("map-current");
+
+  let activeIndex = 0;
+  let timer = null;
+  let playing = true;
+
+  function calendarFor(meta) {
+    return CALENDAR.find((e) => e.conf === meta.calConf && (!meta.calLoc || e.loc.includes(meta.calLoc)));
+  }
+
+  function render() {
+    const id = TOUR_ROUTE_ORDER[activeIndex];
+    const p = MAP_POINTS.find((m) => m.id === id);
+    const meta = MAP_CITY_META[id] || {};
+    const city = CITIES.find((c) => c.id === id);
+    const cal = calendarFor(meta);
+
+    Object.entries(markerEls).forEach(([mid, el]) => el.classList.toggle("is-active", mid === id));
+    Object.entries(labelEls).forEach(([mid, el]) => el.classList.toggle("is-active", mid === id));
+
+    poster.style.left = (p.x / MAP_WIDTH) * 100 + "%";
+    poster.style.top = (p.y / MAP_HEIGHT) * 100 + "%";
+    poster.classList.toggle("below", p.y < MAP_HEIGHT * 0.42);
+    const dateStr = cal ? `${cal.dates}, 2026` : "2026";
+    poster.innerHTML = `
+      <a href="#" id="map-poster-link">
+        ${city ? `<img class="poster-photo" src="${city.photo}" alt="${p.name}" />` : `<div class="poster-photo" style="display:grid;place-items:center;background:linear-gradient(135deg,var(--bg-elev-2),var(--bg-elev));font-size:28px;">${p.name === "Taipei" ? "🀄" : "🕌"}</div>`}
+        <div class="poster-bar">
+          <div>
+            <div class="poster-city">${p.name}</div>
+            <div class="poster-date">${meta.conf} · ${dateStr}</div>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>`;
+    poster.classList.add("show");
+    document.getElementById("map-poster-link").addEventListener("click", (e) => {
+      e.preventDefault();
+      goTo(id, true);
     });
-    g.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
-    g.addEventListener("click", () => {
+
+    currentCity.textContent = p.name;
+    currentMeta.textContent = `${meta.conf} · ${dateStr}`;
+    currentLink.onclick = (e) => {
+      e.preventDefault();
+      goTo(id, true);
+    };
+  }
+
+  function goTo(id, jumpToPage) {
+    const idx = TOUR_ROUTE_ORDER.indexOf(id);
+    if (idx >= 0) activeIndex = idx;
+    render();
+    if (jumpToPage) {
+      const meta = MAP_CITY_META[id] || {};
       if (meta.hasCaseStudy) {
         document.getElementById("tour-2025").scrollIntoView({ behavior: "smooth" });
-        setTimeout(() => openModal(p.id), 450);
+        setTimeout(() => openModal(id), 450);
       } else {
         document.getElementById("calendar").scrollIntoView({ behavior: "smooth" });
       }
-    });
+    }
+  }
+
+  function step(dir) {
+    activeIndex = (activeIndex + dir + TOUR_ROUTE_ORDER.length) % TOUR_ROUTE_ORDER.length;
+    render();
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(() => step(1), 3800);
+  }
+  function stopAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  const playBtn = document.getElementById("map-playpause");
+  document.getElementById("map-prev").addEventListener("click", () => { step(-1); if (playing) startAutoplay(); });
+  document.getElementById("map-next").addEventListener("click", () => { step(1); if (playing) startAutoplay(); });
+  playBtn.addEventListener("click", () => {
+    playing = !playing;
+    playBtn.textContent = playing ? "❚❚" : "▶";
+    playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+    if (playing) startAutoplay();
+    else stopAutoplay();
   });
+
+  // zoom
+  let zoom = 1;
+  const zoomGroup = document.getElementById("map-zoom-group");
+  function applyZoom() { zoomGroup.style.transform = `scale(${zoom})`; }
+  document.getElementById("map-zoom-in").addEventListener("click", () => { zoom = Math.min(2.2, zoom + 0.3); applyZoom(); });
+  document.getElementById("map-zoom-out").addEventListener("click", () => { zoom = Math.max(1, zoom - 0.3); applyZoom(); });
+
+  render();
+  startAutoplay();
 }
 initMap();
 

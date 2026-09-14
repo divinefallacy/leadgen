@@ -32,49 +32,48 @@
 </nav>
 
 <header class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <span class="eyebrow">Year of the Penguin · Asia Tour 2026</span>
-        <h1>Own the <em>second half</em><br>of 2026 in Asia.</h1>
-        <p class="lead">Pudgy Penguins is returning to Asia's most influential Web3 destinations — the same skylines, stages and summits where our 2025 tour reached millions. A limited number of 2026 integration slots remain, and 2027 planning is already open.</p>
-        <div class="hero-ctas">
-          <a href="#apply" class="btn btn-primary">Apply for a 2026 Partnership</a>
-          <a href="#apply?tier=2027" class="btn btn-outline js-book-2027">Book Your 2027 Slot →</a>
+  <div class="wrap hero-copy">
+    <span class="eyebrow">Year of the Penguin · Asia Tour 2026</span>
+    <h1>Own the <em>second half</em> of 2026 in Asia.</h1>
+    <p class="lead">Pudgy Penguins is returning to Asia's most influential Web3 destinations — the same skylines, stages and summits where our 2025 tour reached millions.</p>
+    <div class="hero-ctas">
+      <a href="#apply" class="btn btn-primary">Apply for a 2026 Partnership</a>
+      <a href="#apply" class="btn btn-outline js-book-2027">Book Your 2027 Slot →</a>
+    </div>
+    <p class="hero-note">Currently open: Korea Blockchain Week · Token2049 Singapore · Taiwan Blockchain Week · Devcon 8 Mumbai</p>
+  </div>
+
+  <div class="map-banner">
+    <svg class="map-svg" id="map-svg" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g id="map-zoom-group">
+        <g id="map-dots"></g>
+        <g id="map-markers"></g>
+      </g>
+    </svg>
+
+    <div class="map-poster" id="map-poster"></div>
+
+    <div class="map-zoom">
+      <button type="button" id="map-zoom-in" aria-label="Zoom in">+</button>
+      <button type="button" id="map-zoom-out" aria-label="Zoom out">−</button>
+    </div>
+
+    <div class="map-bottom-right">
+      <a href="#tour-2025" class="map-current" id="map-current">
+        <div>
+          <strong id="map-current-city">Tokyo</strong>
+          <span id="map-current-meta">Japan · WebX 2025</span>
         </div>
-        <p class="hero-note">Currently open: Korea Blockchain Week · Token2049 Singapore · Taiwan Blockchain Week · Devcon 8 Mumbai</p>
-      </div>
-      <div class="hero-collage">
-        <img class="c1" src="assets/singapore-williamsf1.jpg" alt="Pudgy Penguins branded Williams Racing F1 rear wing at Singapore Grand Prix" />
-        <img src="assets/tokyo-shibuya.jpg" alt="Pudgy Penguins Shibuya billboard takeover, Tokyo" />
-        <img src="assets/seoul-triple-s.jpg" alt="Triple S K-pop performance at Pudgy Penguins Seoul activation" />
-        <span class="tag">2025 Asia Tour</span>
+        <span class="arrow">→</span>
+      </a>
+      <div class="map-carousel">
+        <button type="button" id="map-prev" aria-label="Previous city">‹</button>
+        <button type="button" id="map-playpause" aria-label="Pause">❚❚</button>
+        <button type="button" id="map-next" aria-label="Next city">›</button>
       </div>
     </div>
   </div>
 </header>
-
-<section id="map-section">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Live Across Asia</span>
-      <h2>One tour, eight stops, zero downtime.</h2>
-      <p>Hover a city for its 2025 headline result. Click a flagship stop for the full case study, or an upcoming stop to jump to its 2026 date.</p>
-    </div>
-    <div class="map-wrap reveal">
-      <svg class="map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <path class="map-land"></path>
-        <path class="map-route"></path>
-        <g id="map-markers"></g>
-      </svg>
-      <div class="map-tooltip" id="map-tooltip"></div>
-    </div>
-    <div class="map-legend">
-      <span><i class="dot flagship"></i> 2025 flagship — full case study</span>
-      <span><i class="dot open"></i> 2026 route — open for partnership</span>
-    </div>
-  </div>
-</section>
 
 <div class="wrap countdown-wrap">
   <div class="countdown-banner reveal" id="countdown-banner">
